@@ -7,13 +7,16 @@ export default function CalcPage() {
       <section className="text-center mb-8 w-full flex flex-col items-center">
         <div className="inline-flex items-center gap-1.5 rounded-full bg-blue-950 border border-blue-800/60 px-3.5 py-1 text-xs font-semibold text-blue-300 mb-3">
           <Icon name="calculator" className="h-4 w-4" />
-          <span>Calculadoras Trabalhistas & Financeiras Grátis</span>
+          <span>CLT/PJ, rescisão e juros compostos</span>
         </div>
         <h1 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
-          AgilizaCalc — Calculadoras de CLT vs PJ, Rescisão e Juros
+          AgilizaCalc: simulações de CLT/PJ, rescisão e juros
         </h1>
         <p className="mt-2 text-sm sm:text-base text-slate-400 max-w-xl mx-auto leading-relaxed">
-          Simule propostas de trabalho CLT vs PJ, calcule rescisão de contrato com FGTS e simule investimentos com juros compostos.
+          Compare cenários de trabalho, estime valores de rescisão e simule juros compostos com os dados informados.
+        </p>
+        <p className="mt-3 max-w-xl text-xs leading-relaxed text-slate-500">
+          Os valores são estimativas. Confira as entradas e os parâmetros apresentados antes de usar o resultado.
         </p>
       </section>
 
@@ -26,15 +29,15 @@ export default function CalcPage() {
         {[
           {
             title: 'CLT vs PJ',
-            desc: 'Descubra exatamente quanto a proposta PJ precisa pagar a mais para compensar FGTS, 13º salário, férias remuneradas e benefícios.',
+            desc: 'Compare o cenário CLT e PJ com as entradas e premissas usadas pela calculadora.',
           },
           {
             title: 'Rescisão Trabalhista',
-            desc: 'Estime o valor exato dos direitos na demissão sem justa causa, aviso prévio, saldo de salário e multa rescisória de 40% do FGTS.',
+            desc: 'Simule saldo de salário, férias, décimo terceiro, aviso prévio e multa do FGTS conforme os dados informados.',
           },
           {
             title: 'Juros Compostos',
-            desc: 'Veja o poder do tempo e dos aportes mensais na construção de patrimônio com juros acumulados sobre juros.',
+            desc: 'Calcule uma projeção com valor inicial, taxa, período e aportes informados.',
           },
         ].map((item, idx) => (
           <div key={idx} className="bg-slate-900 border border-slate-800 rounded-xl p-4 text-center">

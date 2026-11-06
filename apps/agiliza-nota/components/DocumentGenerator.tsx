@@ -237,10 +237,10 @@ export function DocumentGenerator() {
               </div>
               <div className="text-[11px] space-y-2">
                 <p>
-                  <strong>REMETENTE:</strong> {emissorNome} — {remetenteEnd}
+                  <strong>REMETENTE:</strong> {emissorNome}, {remetenteEnd}
                 </p>
                 <p>
-                  <strong>DESTINATÁRIO:</strong> {destinatarioNome} — {destinatarioEnd}
+                  <strong>DESTINATÁRIO:</strong> {destinatarioNome}, {destinatarioEnd}
                 </p>
               </div>
               <table className="w-full text-left text-[10px] border-collapse border border-slate-300 mt-4">
@@ -270,7 +270,7 @@ export function DocumentGenerator() {
           )}
 
           <div className="text-center pt-8 border-t border-slate-200 text-[9px] text-slate-400">
-            Documento gerado via AgilizaNota — www.agilizatools.com.br
+            Documento gerado via AgilizaNota. www.agilizatools.com.br
           </div>
         </div>
       </div>

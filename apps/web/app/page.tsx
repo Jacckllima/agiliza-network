@@ -2,7 +2,6 @@
 
 import { useState, useMemo } from 'react'
 import { TOOLS, Container, Card, Input, Icon } from '@agiliza/ui'
-import type { IconName } from '@agiliza/ui'
 
 interface CategoryOption {
   id: string
@@ -45,13 +44,10 @@ export default function Home() {
       {/* Hero Section */}
       <section className="mb-8 flex max-w-3xl flex-col items-center text-center sm:mb-10">
         <h1 className="text-3xl font-extrabold leading-tight tracking-tight text-white sm:text-4xl">
-          Sua Central de Ferramentas Web{' '}
-          <span className="text-blue-300">
-            Rápidas, Privadas & Gratuitas
-          </span>
+          Ferramentas para QR Codes, imagens, textos e cálculos
         </h1>
         <p className="mt-4 max-w-2xl text-sm leading-relaxed text-slate-500">
-          Comprima PDFs, gere QR Codes Pix, faça cálculos e edite arquivos direto no navegador.
+          Crie QR Codes, converta imagens, conte palavras, formate JSON e compare cenários financeiros.
         </p>
 
         {/* Search Input Bar */}
@@ -125,7 +121,7 @@ export default function Home() {
               }}
               className="mt-3 text-xs font-semibold text-blue-400 hover:underline"
             >
-              Ver todas as 10 ferramentas
+              Ver todas as ferramentas
             </button>
           </div>
         ) : (
@@ -142,15 +138,6 @@ export default function Home() {
                       <span className="flex h-8 w-8 items-center justify-center rounded-md border border-blue-100 bg-blue-50 text-blue-800 dark:border-blue-800/70 dark:bg-blue-950/60 dark:text-blue-300">
                         <Icon name={tool.icon} className="h-4 w-4" />
                       </span>
-                      {tool.badge && (
-                        <span className={`rounded-md border px-2 py-0.5 text-[8px] font-semibold uppercase tracking-wide ${
-                          tool.badge.toLowerCase() === 'popular'
-                            ? 'border-blue-200 bg-blue-50 text-blue-800 dark:border-blue-800/70 dark:bg-blue-950/60 dark:text-blue-300'
-                            : 'border-emerald-200 bg-emerald-50 text-emerald-800 dark:border-emerald-800/70 dark:bg-emerald-950/50 dark:text-emerald-300'
-                        }`}>
-                          {tool.badge}
-                        </span>
-                      )}
                     </div>
                     <h2 className="flex items-center gap-1.5 text-sm font-semibold text-blue-800 transition-colors group-hover:text-blue-600 dark:text-blue-300 dark:group-hover:text-blue-200">
                       {tool.name}
@@ -182,66 +169,6 @@ export default function Home() {
         )}
       </section>
 
-      {/* Feature Highlights */}
-      <section className="my-10 grid w-full grid-cols-1 gap-5 md:grid-cols-3" aria-label="Diferenciais da plataforma">
-        {[
-          {
-            icon: 'shield',
-            title: '100% Privado & Client-side',
-            desc: 'Seus arquivos, documentos e dados não são enviados para nenhum servidor externo. Tudo é processado direto no seu navegador.',
-          },
-          {
-            icon: 'bolt',
-            title: 'Gratuito & Sem Cadastro',
-            desc: 'Sem necessidade de login, senhas ou assinaturas pagas. Acesse e use qualquer utilitário instantaneamente.',
-          },
-          {
-            icon: 'smartphone',
-            title: 'Responsivo & Otimizado',
-            desc: 'Funciona perfeitamente em smartphones, tablets e computadores, com alta performance e carregamento instantâneo.',
-          },
-        ].map((feat, idx) => (
-          <Card key={idx} variant="bordered" padding="md" className="text-center">
-            <Icon name={feat.icon as IconName} className="mx-auto mb-3 h-8 w-8 text-blue-300" />
-            <h3 className="text-base font-bold text-white mb-2">{feat.title}</h3>
-            <p className="text-xs text-slate-400 leading-relaxed">{feat.desc}</p>
-          </Card>
-        ))}
-      </section>
-
-      {/* FAQ Section */}
-      <section className="my-8 w-full max-w-4xl" aria-label="Perguntas Frequentes">
-        <div className="text-center mb-8">
-          <h2 className="text-2xl font-bold text-white">Dúvidas Frequentes</h2>
-          <p className="text-xs text-slate-400 mt-1">Conheça mais sobre a suíte Agiliza Tools</p>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {[
-            {
-              q: 'As ferramentas da Rede Agiliza são gratuitas?',
-              a: 'Sim! Todas as 10 ferramentas são 100% gratuitas e ilimitadas para uso pessoal e comercial.',
-            },
-            {
-              q: 'Meus arquivos são salvos em algum servidor?',
-              a: 'Não. Ferramentas como AgilizaPDF, AgilizaImg e AgilizaSign processam os arquivos localmente via WebAssembly e Canvas no seu próprio navegador.',
-            },
-            {
-              q: 'Preciso criar conta para usar?',
-              a: 'Não é necessário nenhum cadastro ou fornecimento de e-mail para utilizar as ferramentas utilitárias.',
-            },
-            {
-              q: 'Quais ferramentas estão disponíveis?',
-              a: 'AgilizaPDF, AgilizaMedia, AgilizaCalc, AgilizaQR, AgilizaBio, AgilizaNota, AgilizaImg, AgilizaText, AgilizaDev e AgilizaSign.',
-            },
-          ].map((item, idx) => (
-            <Card key={idx} variant="default" padding="sm" className="bg-slate-900/90">
-              <h3 className="text-xs font-bold text-white mb-1.5">{item.q}</h3>
-              <p className="text-xs text-slate-400 leading-relaxed">{item.a}</p>
-            </Card>
-          ))}
-        </div>
-      </section>
     </Container>
   )
 }

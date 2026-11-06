@@ -40,7 +40,6 @@ export function BioBuilder() {
   const [newTitle, setNewTitle] = useState('')
   const [newUrl, setNewUrl] = useState('')
   const [newIcon, setNewIcon] = useState<IconName>('link')
-  const [copied, setCopied] = useState(false)
 
   const activeTheme = (THEMES.find((t) => t.id === themeId) || THEMES[0])!
 
@@ -62,12 +61,6 @@ export function BioBuilder() {
 
   const removeLink = (id: string) => {
     setLinks(links.filter((l) => l.id !== id))
-  }
-
-  const handleCopy = () => {
-    navigator.clipboard.writeText(`https://bio.agilizatools.com.br/${handle.replace('@', '')}`)
-    setCopied(true)
-    setTimeout(() => setCopied(false), 2000)
   }
 
   return (
@@ -206,22 +199,15 @@ export function BioBuilder() {
           </div>
         </div>
 
-        {/* Export / Share CTA */}
-        <div className="flex gap-3">
-          <button
-            onClick={handleCopy}
-            className="flex-1 py-3 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs rounded-xl shadow-lg transition-all flex items-center justify-center gap-2"
-          >
-            <Icon name={copied ? 'check' : 'copy'} className="h-4 w-4" />
-            <span>{copied ? 'Link copiado!' : 'Copiar link do perfil'}</span>
-          </button>
-        </div>
+        <p role="status" className="rounded-lg border border-amber-800/60 bg-amber-950/30 p-3 text-xs leading-relaxed text-amber-200">
+          Esta é uma prévia local. O perfil não foi publicado e ainda não tem um link compartilhável.
+        </p>
       </div>
 
       {/* Mobile Live Preview Column */}
       <div className="lg:col-span-5 flex flex-col items-center sticky top-24">
         <span className="text-xs font-bold text-slate-400 mb-3 uppercase tracking-wider">
-          Pré-visualização em tempo real
+          Prévia local do perfil
         </span>
 
         {/* Smartphone Shell */}

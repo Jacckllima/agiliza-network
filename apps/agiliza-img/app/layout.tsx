@@ -6,15 +6,15 @@ import './globals.css'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'AgilizaImg — Comprimir e Converter Imagens Online Grátis (WebP, PNG, JPG)',
-  description: 'Comprime e converte imagens para WebP, PNG e JPG direto no browser. Sem upload para servidores. Grátis.',
-  keywords: ['comprimir imagem online', 'converter webp', 'reduzir tamanho foto', 'otimizar imagem gratis'],
+  title: 'AgilizaImg: converter e redimensionar imagens',
+  description: 'Ajuste dimensões e qualidade e exporte imagens em WebP, JPEG ou PNG.',
+  keywords: ['converter imagem para webp', 'redimensionar imagem', 'ajustar qualidade de imagem'],
   authors: [{ name: 'Rede Agiliza', url: 'https://agilizatools.com.br' }],
   openGraph: {
     type: 'website',
     siteName: 'Agiliza Network',
-    title: 'AgilizaImg — Compressor e Conversor de Imagens',
-    description: 'Reduza o tamanho das suas imagens sem perder qualidade visual.',
+    title: 'AgilizaImg: conversor de imagens',
+    description: 'Redimensione imagens, ajuste a qualidade e escolha entre WebP, JPEG e PNG.',
   },
   robots: { index: true, follow: true },
 }

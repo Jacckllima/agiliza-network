@@ -6,15 +6,15 @@ import './globals.css'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'AgilizaMedia — Baixar Vídeos do Instagram, TikTok e YouTube',
-  description: "Baixe vídeos do Instagram, TikTok e YouTube sem marca d'água. Rápido e gratuito.",
-  keywords: ['baixar video instagram', 'baixar tiktok sem marca dagua', 'youtube downloader', 'baixar mp3'],
+  title: 'AgilizaMedia: ferramenta de download de mídia',
+  description: 'O AgilizaMedia ainda não oferece um fluxo funcional para obter ou baixar arquivos de mídia.',
+  keywords: ['ferramenta de mídia', 'agiliza media'],
   authors: [{ name: 'Rede Agiliza', url: 'https://agilizatools.com.br' }],
   openGraph: {
     type: 'website',
     siteName: 'Agiliza Network',
-    title: 'AgilizaMedia — Baixar Vídeos e Mídias Sociais',
-    description: 'Baixe vídeos e áudios do Instagram, TikTok, YouTube e X sem marca d\'água.',
+    title: 'AgilizaMedia: ferramenta de download de mídia',
+    description: 'O fluxo de download de mídia está indisponível nesta versão.',
   },
   robots: { index: true, follow: true },
 }

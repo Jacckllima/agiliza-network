@@ -6,15 +6,15 @@ import './globals.css'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'AgilizaDev — Gerar CPF, CNPJ, CEP e Dados para Testes',
-  description: 'Gere e valide CPF, CNPJ, cartões de crédito e dados fictícios brasileiros para testes de software.',
+  title: 'AgilizaDev: dados de teste, CPF, CNPJ e CEP',
+  description: 'Gere dados de CPF e CNPJ para testes, valide documentos, consulte CEP e codifique texto em Base64.',
   keywords: ['gerar cpf valido teste', 'gerar cnpj', 'validar cpf cnpj', 'consultar cep'],
   authors: [{ name: 'Rede Agiliza', url: 'https://agilizatools.com.br' }],
   openGraph: {
     type: 'website',
     siteName: 'Agiliza Network',
-    title: 'AgilizaDev — Gerador & Validador de Documentos BR',
-    description: 'Gerador e validador de CPF, CNPJ, CNH e consulta de CEP.',
+    title: 'AgilizaDev: utilitários para desenvolvimento',
+    description: 'Gere dados de teste, valide CPF e CNPJ, consulte CEP e use Base64.',
   },
   robots: { index: true, follow: true },
 }

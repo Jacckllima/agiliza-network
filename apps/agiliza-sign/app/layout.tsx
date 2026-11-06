@@ -6,15 +6,15 @@ import './globals.css'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'AgilizaSign — Assinar PDF Online Grátis Sem Cadastro',
-  description: 'Assine documentos PDF online de forma simples. Desenhe, digite ou importe sua assinatura. Grátis.',
-  keywords: ['assinar pdf online', 'assinatura digital pdf gratis', 'assinar documento online', 'assinar pdf sem cadastro'],
+  title: 'AgilizaSign: assinatura visual em arquivos PDF',
+  description: 'A ferramenta de assinatura em PDF está indisponível nesta versão.',
+  keywords: ['assinatura visual em pdf', 'desenhar assinatura para pdf'],
   authors: [{ name: 'Rede Agiliza', url: 'https://agilizatools.com.br' }],
   openGraph: {
     type: 'website',
     siteName: 'Agiliza Network',
-    title: 'AgilizaSign — Assinatura Digital de PDFs',
-    description: 'Assine PDFs desenhando, digitando ou importando imagens de assinatura.',
+    title: 'AgilizaSign: assinatura visual em PDF',
+    description: 'A ferramenta de assinatura em PDF está indisponível nesta versão.',
   },
   robots: { index: true, follow: true },
 }

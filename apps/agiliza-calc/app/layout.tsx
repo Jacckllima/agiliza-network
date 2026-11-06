@@ -6,15 +6,15 @@ import './globals.css'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'AgilizaCalc — Calculadora CLT vs PJ, Rescisão e Juros Compostos',
-  description: 'Calculadoras financeiras e trabalhistas: CLT vs PJ, rescisão, FGTS, juros compostos e IR. Grátis.',
+  title: 'AgilizaCalc: simulações CLT/PJ, rescisão e juros',
+  description: 'Compare cenários de trabalho, estime rescisão e calcule juros compostos com as premissas exibidas.',
   keywords: ['calculadora clt pj', 'calcular rescisão', 'calculadora juros compostos', 'calcular fgts'],
   authors: [{ name: 'Rede Agiliza', url: 'https://agilizatools.com.br' }],
   openGraph: {
     type: 'website',
     siteName: 'Agiliza Network',
-    title: 'AgilizaCalc — Calculadoras Financeiras & Trabalhistas',
-    description: 'Simule salario CLT vs PJ, rescisão de contrato e investimentos com juros compostos.',
+    title: 'AgilizaCalc: simulações financeiras e trabalhistas',
+    description: 'Simule cenários CLT e PJ, rescisão e juros compostos. Os resultados são estimativas.',
   },
   robots: { index: true, follow: true },
 }
