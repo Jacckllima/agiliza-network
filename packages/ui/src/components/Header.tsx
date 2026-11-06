@@ -65,7 +65,7 @@ export function Header({ currentTool, homeHref = 'https://agilizatools.com.br' }
         <a
           href={homeHref}
           className="group flex items-center gap-2 text-base font-extrabold text-white transition-opacity hover:opacity-90"
-          aria-label="Agiliza Tools — Página inicial"
+          aria-label="Agiliza Tools: página inicial"
         >
           <span className="flex h-8 w-8 shrink-0 items-center justify-center" aria-hidden="true">
             <svg viewBox="0 0 32 32" className="h-full w-full">
@@ -136,11 +136,6 @@ export function Header({ currentTool, homeHref = 'https://agilizatools.com.br' }
                         <div className="flex-1 truncate">
                           <div className="flex items-center gap-1.5">
                             <span className="font-semibold text-white">{tool.name}</span>
-                            {tool.badge && (
-                              <span className="text-[9px] font-bold uppercase tracking-wider px-1.5 py-0.2 rounded bg-blue-500/20 text-blue-300 border border-blue-500/30">
-                                {tool.badge}
-                              </span>
-                            )}
                           </div>
                           <span className="block truncate text-[11px] text-slate-400 font-normal">
                             {tool.description}

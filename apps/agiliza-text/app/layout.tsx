@@ -6,14 +6,14 @@ import './globals.css'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'AgilizaText — Contador de Caracteres, Formatação e JSON Online',
-  description: 'Conte palavras, formate maiúsculas/minúsculas, valide JSON e compare textos online. Grátis.',
+  title: 'AgilizaText: contador de texto e ferramentas para JSON',
+  description: 'Conte caracteres e palavras, compare textos, altere a caixa e formate JSON.',
   keywords: ['contar caracteres online', 'contador palavras', 'formatar json online', 'comparar textos'],
   authors: [{ name: 'Rede Agiliza', url: 'https://agilizatools.com.br' }],
   openGraph: {
     type: 'website',
     siteName: 'Agiliza Network',
-    title: 'AgilizaText — Utilitários de Texto & JSON',
+    title: 'AgilizaText: utilitários de texto e JSON',
     description: 'Contador de palavras, formatador JSON e conversor de caixa.',
   },
   robots: { index: true, follow: true },

@@ -7,13 +7,16 @@ export default function DevPage() {
       <section className="text-center mb-8 w-full flex flex-col items-center">
         <div className="inline-flex items-center gap-1.5 rounded-full bg-blue-950 border border-blue-800/60 px-3.5 py-1 text-xs font-semibold text-blue-300 mb-3">
           <Icon name="code" className="h-4 w-4" />
-          <span>Validador de Dígitos BR · ViaCEP · Base64 & Ferramentas Dev</span>
+          <span>Dados para testes, validação de documentos, CEP e Base64</span>
         </div>
         <h1 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
-          AgilizaDev — Gerador de CPF, CNPJ e Testes
+          AgilizaDev: dados de teste e utilitários de desenvolvimento
         </h1>
         <p className="mt-2 text-sm sm:text-base text-slate-400 max-w-xl mx-auto leading-relaxed">
-          Gere e valide CPF, CNPJ, consulte endereços por CEP e codifique Base64 para testes de software com rapidez.
+          Gere dados de CPF e CNPJ para testes, valide os dígitos, consulte endereços por CEP e converta texto para Base64.
+        </p>
+        <p className="mt-3 max-w-xl text-xs leading-relaxed text-amber-300">
+          Os dados gerados servem para testes. Não os use como documentos de pessoas ou empresas reais.
         </p>
       </section>
 

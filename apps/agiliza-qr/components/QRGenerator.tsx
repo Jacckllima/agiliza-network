@@ -147,7 +147,6 @@ export function QRGenerator() {
   const [qrColor, setQrColor] = useState('#1E293B')
   const [bgColor, setBgColor] = useState('#FFFFFF')
   const [margin, setMargin] = useState(4)
-  const [isDynamic, setIsDynamic] = useState(false)
   const [includeLogo, setIncludeLogo] = useState(true)
   const [copyFeedback, setCopyFeedback] = useState('')
   const [svgContent, setSvgContent] = useState('')
@@ -641,34 +640,6 @@ export function QRGenerator() {
               </div>
             </div>
 
-            {/* Dynamic Toggle Row */}
-            <div className="flex items-center justify-between px-1 pt-1">
-              <div>
-                <span className="text-xs font-semibold text-slate-800">Tornar Dinâmico</span>
-                <p className="text-[11px] text-slate-400">Permite editar o destino mesmo após a impressão</p>
-              </div>
-<button
-                 type="button"
-                 role="switch"
-                 aria-checked={isDynamic}
-                 aria-label="Tornar o QR Code dinâmico"
-                 onClick={() => setIsDynamic(!isDynamic)}
-                 className="inline-flex items-center justify-center rounded-lg p-1 transition-colors duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
-               >
-                 <span
-                   className={`relative inline-flex h-5 w-9 shrink-0 cursor-pointer rounded-md border-2 border-transparent transition-colors duration-200 ease-in-out ${
-                     isDynamic ? 'bg-blue-600' : 'bg-slate-300'
-                   }`}
-                 >
-                   <span
-                     aria-hidden="true"
-                     className={`inline-block h-4 w-4 transform rounded-full bg-white shadow-sm transition duration-200 ease-in-out ${
-                       isDynamic ? 'translate-x-4' : 'translate-x-0'
-                     }`}
-                   />
-                 </span>
-               </button>
-            </div>
           </div>
         </div>
 
@@ -681,7 +652,7 @@ export function QRGenerator() {
                 Pré-visualização do QR Code
               </h3>
               <p className="text-xs text-slate-400 capitalize mt-0.5">
-                {activeTab} #1
+                {activeTab}
               </p>
             </div>
 
@@ -738,7 +709,7 @@ export function QRGenerator() {
             </div>
 
             <p className="mt-4 text-xs text-slate-400 text-center">
-              âœ“ Processamento 100% local no seu navegador
+              O QR Code é gerado a partir dos dados preenchidos no formulário.
             </p>
           </div>
 

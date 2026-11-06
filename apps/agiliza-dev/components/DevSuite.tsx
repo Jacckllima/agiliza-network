@@ -5,6 +5,37 @@ import { Icon } from '@agiliza/ui'
 
 type DevTab = 'generator' | 'cep' | 'encoder' | 'mock'
 
+function isValidCpf(value: string): boolean {
+  if (!/^\d{11}$/.test(value) || /^(\d)\1{10}$/.test(value)) return false
+
+  const digits = [...value].map(Number)
+  for (let checkIndex = 9; checkIndex <= 10; checkIndex += 1) {
+    const sum = digits
+      .slice(0, checkIndex)
+      .reduce((total, digit, index) => total + digit * (checkIndex + 1 - index), 0)
+    const remainder = (sum * 10) % 11
+    const expectedDigit = remainder === 10 ? 0 : remainder
+    if (digits[checkIndex] !== expectedDigit) return false
+  }
+
+  return true
+}
+
+function isValidCnpj(value: string): boolean {
+  if (!/^[A-Z0-9]{12}\d{2}$/.test(value) || /^(.)\1{13}$/.test(value)) return false
+
+  const characters = [...value].map((character) => character.charCodeAt(0) - 48)
+  const calculateDigit = (values: number[], weights: number[]) => {
+    const remainder = values.reduce((sum, value, index) => sum + value * weights[index]!, 0) % 11
+    return remainder < 2 ? 0 : 11 - remainder
+  }
+
+  const firstDigit = calculateDigit(characters.slice(0, 12), [5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2])
+  const secondDigit = calculateDigit([...characters.slice(0, 12), firstDigit], [6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2])
+
+  return characters[12] === firstDigit && characters[13] === secondDigit
+}
+
 export function DevSuite() {
   const [activeTab, setActiveTab] = useState<DevTab>('generator')
 
@@ -63,13 +94,21 @@ export function DevSuite() {
   }
 
   const validateDoc = () => {
-    const clean = validateInput.replace(/\D/g, '')
-    if (clean.length === 11) {
-      setValidationResult({ isValid: true, type: 'CPF Válido' })
-    } else if (clean.length === 14) {
-      setValidationResult({ isValid: true, type: 'CNPJ Válido' })
+    const clean = validateInput.toUpperCase().replace(/[.\-/\s]/g, '')
+    if (/^\d{11}$/.test(clean)) {
+      const valid = isValidCpf(clean)
+      setValidationResult({
+        isValid: valid,
+        type: valid ? 'CPF com dígitos verificadores válidos' : 'CPF inválido: confira os dígitos verificadores',
+      })
+    } else if (/^[A-Z0-9]{12}\d{2}$/.test(clean)) {
+      const valid = isValidCnpj(clean)
+      setValidationResult({
+        isValid: valid,
+        type: valid ? 'CNPJ com dígitos verificadores válidos' : 'CNPJ inválido: confira os dígitos verificadores',
+      })
     } else {
-      setValidationResult({ isValid: false, type: 'Documento Inválido (digite 11 ou 14 dígitos)' })
+      setValidationResult({ isValid: false, type: 'Formato inválido: informe um CPF ou CNPJ completo' })
     }
   }
 
@@ -164,7 +203,7 @@ export function DevSuite() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* CPF Box */}
             <div className="bg-slate-950 border border-slate-800 p-5 rounded-xl space-y-3">
-              <h3 className="text-xs font-bold text-blue-400 uppercase tracking-wider">Gerador de CPF Válido</h3>
+              <h3 className="text-xs font-bold text-blue-400 uppercase tracking-wider">Gerador de CPF para testes</h3>
               <div className="flex items-center gap-2">
                 <input
                   type="text"
@@ -193,7 +232,7 @@ export function DevSuite() {
 
             {/* CNPJ Box */}
             <div className="bg-slate-950 border border-slate-800 p-5 rounded-xl space-y-3">
-              <h3 className="text-xs font-bold text-cyan-400 uppercase tracking-wider">Gerador de CNPJ Válido</h3>
+              <h3 className="text-xs font-bold text-cyan-400 uppercase tracking-wider">Gerador de CNPJ para testes</h3>
               <div className="flex items-center gap-2">
                 <input
                   type="text"
@@ -248,6 +287,9 @@ export function DevSuite() {
                 {validationResult.type}
               </p>
             )}
+            <p className="text-[11px] leading-relaxed text-slate-500">
+              A checagem confere o formato e os dígitos verificadores. Ela não consulta o cadastro da Receita Federal.
+            </p>
           </div>
         </div>
       )}

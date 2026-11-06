@@ -13,4 +13,4 @@ const config: Config = {
   },
 }
 
-export default createJestConfig(config)
+export default createJestConfig(config) as unknown as () => Promise<Config>

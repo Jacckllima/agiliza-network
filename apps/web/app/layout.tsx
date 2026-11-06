@@ -6,15 +6,15 @@ import './globals.css'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'Agiliza Tools — Suíte de Ferramentas Web Utilitárias Gratuitas',
-  description: '100% Grátis, Privado e Sem Cadastro. Comprima PDFs, gere QR Code Pix, calcule CLT vs PJ, edite imagens, formate JSON e muito mais.',
-  keywords: ['ferramentas online gratis', 'agiliza tools', 'gerador qr code pix', 'comprimir pdf online', 'calculadora clt pj', 'gerar cpf valido'],
+  title: 'Agiliza Tools: QR Codes, imagens, textos e cálculos',
+  description: 'Crie QR Codes, converta imagens, conte palavras, formate JSON e compare cenários financeiros.',
+  keywords: ['ferramentas online', 'agiliza tools', 'gerador qr code pix', 'conversor de imagens', 'calculadora clt pj', 'gerar cpf para testes'],
   authors: [{ name: 'Rede Agiliza', url: 'https://agilizatools.com.br' }],
   openGraph: {
     type: 'website',
     siteName: 'Agiliza Tools',
-    title: 'Agiliza Tools — Suíte de Ferramentas Web Utilitárias Gratuitas',
-    description: 'Ferramentas web rápidas, gratuitas e sem envio de dados para servidores.',
+    title: 'Agiliza Tools: QR Codes, imagens, textos e cálculos',
+    description: 'Acesse ferramentas para QR Codes, imagens, textos, cálculos e documentos.',
   },
   robots: { index: true, follow: true },
 }

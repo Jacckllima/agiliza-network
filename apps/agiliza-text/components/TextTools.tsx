@@ -10,7 +10,7 @@ export function TextTools() {
 
   // --- Counter & Case State ---
   const [text, setText] = useState(
-    'AgilizaText é a sua ferramenta online gratuita para contar caracteres, palavras e linhas, além de formatar textos e JSON instantaneamente.'
+    'Digite ou cole seu texto para ver a contagem de caracteres e palavras.'
   )
 
   const charCount = text.length
@@ -41,7 +41,7 @@ export function TextTools() {
   }
 
   // --- JSON State ---
-  const [jsonInput, setJsonInput] = useState('{\n  "nome": "AgilizaTools",\n  "status": "ativo",\n  "ferramentas": 10\n}')
+  const [jsonInput, setJsonInput] = useState('{\n  "nome": "Exemplo",\n  "status": "ativo",\n  "itens": ["A", "B"]\n}')
   const [jsonError, setJsonError] = useState('')
 
   const handleJsonFormat = (indent: number) => {
@@ -115,7 +115,7 @@ export function TextTools() {
             </div>
             <div className="bg-slate-950 border border-slate-800 p-3 rounded-xl text-center col-span-2 sm:col-span-1">
               <span className="text-2xl font-extrabold text-amber-400">~{readTimeMin}m</span>
-              <span className="block text-[10px] text-slate-500 uppercase tracking-wider mt-0.5">Tempo Leitura</span>
+              <span className="block text-[10px] text-slate-500 uppercase tracking-wider mt-0.5">Leitura estimada</span>
             </div>
           </div>
 

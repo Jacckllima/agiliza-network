@@ -6,14 +6,14 @@ import './globals.css'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'AgilizaQR — Gerar QR Code Pix, Wi-Fi e WhatsApp Online Grátis',
-  description: 'Gere QR Codes personalizados para Pix, Wi-Fi, WhatsApp e links. Exporta em PNG, SVG e PDF.',
-  keywords: ['gerar qr code pix', 'qr code wifi', 'qr code whatsapp', 'criar qr code gratis'],
+  title: 'AgilizaQR: gerador de QR Codes para Pix, Wi-Fi e links',
+  description: 'Gere QR Codes para Pix, Wi-Fi, links, texto e contatos. Baixe a imagem em PNG ou SVG.',
+  keywords: ['gerar qr code pix', 'qr code wifi', 'criar qr code'],
   authors: [{ name: 'Rede Agiliza', url: 'https://agilizatools.com.br' }],
   openGraph: {
     type: 'website',
     siteName: 'Agiliza Network',
-    title: 'AgilizaQR — Gerador de QR Code Instantâneo',
+    title: 'AgilizaQR: gerador de QR Codes',
     description: 'Gere QR Codes personalizados para Pix, Wi-Fi, WhatsApp e links.',
   },
   robots: { index: true, follow: true },

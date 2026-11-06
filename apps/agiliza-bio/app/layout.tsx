@@ -6,15 +6,15 @@ import './globals.css'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'AgilizaBio — Crie sua Página de Links Grátis (Alternativa ao Linktree)',
-  description: 'Crie sua página de links personalizada para a bio do Instagram e redes sociais. Grátis e sem cadastro.',
-  keywords: ['pagina de links gratis', 'alternativa linktree', 'link na bio instagram', 'criar bio link'],
+  title: 'AgilizaBio: editor de prévia de página com links',
+  description: 'Monte uma prévia local de uma página com links. A publicação de um endereço compartilhável ainda não está disponível.',
+  keywords: ['editor de página com links', 'prévia de links para bio'],
   authors: [{ name: 'Rede Agiliza', url: 'https://agilizatools.com.br' }],
   openGraph: {
     type: 'website',
     siteName: 'Agiliza Network',
-    title: 'AgilizaBio — Crie sua Página de Links Grátis',
-    description: 'Crie sua página de links personalizada para a bio do Instagram.',
+    title: 'AgilizaBio: editor de prévia de links',
+    description: 'Monte e visualize localmente uma página com links.',
   },
   robots: { index: true, follow: true },
 }

@@ -6,15 +6,15 @@ import './globals.css'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'AgilizaNota — Gerar Recibo de Pagamento Online Grátis em PDF',
-  description: 'Gere recibos de pagamento, declarações de conteúdo e contratos em PDF. Simples e gratuito.',
-  keywords: ['gerar recibo pagamento', 'recibo online pdf', 'declaracao de conteudo', 'contrato prestacao servico'],
+  title: 'AgilizaNota: gerador de recibos e declarações em PDF',
+  description: 'Gere recibos de pagamento e declarações de conteúdo em PDF.',
+  keywords: ['gerar recibo de pagamento', 'recibo em pdf', 'declaração de conteúdo'],
   authors: [{ name: 'Rede Agiliza', url: 'https://agilizatools.com.br' }],
   openGraph: {
     type: 'website',
     siteName: 'Agiliza Network',
-    title: 'AgilizaNota — Gerador de Recibos e Declarações PDF',
-    description: 'Emita recibos de pagamento e declarações de conteúdo em PDF instantaneamente.',
+    title: 'AgilizaNota: recibos e declarações em PDF',
+    description: 'Preencha os dados para gerar um recibo ou uma declaração de conteúdo em PDF.',
   },
   robots: { index: true, follow: true },
 }

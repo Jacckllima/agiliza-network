@@ -6,15 +6,15 @@ import './globals.css'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'AgilizaPDF — Comprimir, Mesclar e Dividir PDFs Online Grátis',
-  description: 'Comprime, mescla, divide e converte PDFs 100% no seu navegador. Sem upload para servidores. Grátis.',
-  keywords: ['comprimir pdf', 'mesclar pdf', 'dividir pdf', 'converter pdf online', 'pdf gratis'],
+  title: 'AgilizaPDF: ferramentas para arquivos PDF',
+  description: 'As operações com arquivos PDF estão indisponíveis nesta versão do AgilizaPDF.',
+  keywords: ['ferramentas para pdf', 'agiliza pdf'],
   authors: [{ name: 'Rede Agiliza', url: 'https://agilizatools.com.br' }],
   openGraph: {
     type: 'website',
     siteName: 'Agiliza Network',
-    title: 'AgilizaPDF — Comprimir, Mesclar e Dividir PDFs Online Grátis',
-    description: 'Comprime, mescla, divide e converte PDFs 100% no seu navegador.',
+    title: 'AgilizaPDF: ferramentas para arquivos PDF',
+    description: 'As operações com arquivos PDF estão indisponíveis nesta versão.',
   },
   robots: { index: true, follow: true },
 }
