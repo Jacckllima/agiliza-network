@@ -56,21 +56,24 @@
 
 ### Arquitetura do Microserviço
 ```
-POST /api/info        — retorna metadados do vídeo
-POST /api/download    — inicia o download (retorna job ID)
-GET  /api/status/{id} — status do job (polling ou SSE)
-GET  /api/file/{id}   — stream do arquivo final
+POST /api/info        : retorna metadados do vídeo
+POST /api/download    : inicia o download (retorna job ID)
+GET  /api/status/{id} : status do job (polling ou SSE)
+GET  /api/file/{id}   : stream do arquivo final
 ```
 
-### Rate Limits
-- 3 downloads por IP por hora
-- Tamanho máximo de arquivo: 500MB
-- TTL do arquivo no storage: 10 minutos
+### Rate Limits e Restrições Técnicas
+- 3 downloads por IP por hora.
+- Tamanho máximo de arquivo: 500MB.
+- TTL do arquivo no storage temporário: 10 minutos.
+- Formatos validados: MP4 (video/mp4) e MP3 (audio/mpeg). Cancelamento imediato em caso de perda de conexão.
 
-### Disclaimers Legais
-- Apenas para conteúdo próprio ou com permissão
-- Não armazenamos histórico de downloads
-- Compliance com DMCA takedown requests
+### Requisitos de Autorização e Disclaimers Legais
+- Exclusivo para mídias próprias ou de domínio público / sob licença autorizada pelo criador.
+- Proibida a tentativa de burlar mecanismos de proteção digital (DRM) ou acessar mídias privadas/restritas.
+- Tratamento explícito de erros: mídia privada, URL expirada, violação de direitos autorais ou limite excedido.
+- Não armazenamos URLs de usuários, dados pessoais ou histórico de downloads.
+- Compliance com notificações de takedown DMCA.
 
 ---
 

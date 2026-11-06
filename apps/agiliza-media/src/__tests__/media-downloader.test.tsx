@@ -3,24 +3,27 @@ import { render, screen } from '@testing-library/react'
 import { MediaDownloader } from '../../components/MediaDownloader'
 
 describe('MediaDownloader', () => {
-  it('renders the media downloader', () => {
+  it('renders the media downloader component', () => {
     render(<MediaDownloader />)
-    expect(screen.getByText(/mídia/i)).toBeInTheDocument()
+    expect(screen.getByRole('region', { name: /download de mídia/i })).toBeInTheDocument()
   })
 
-  it('renders URL input', () => {
+  it('renders URL input as disabled', () => {
     render(<MediaDownloader />)
-    expect(screen.getByLabelText(/link/i)).toBeInTheDocument()
+    const input = screen.getByLabelText(/link da mídia/i)
+    expect(input).toBeInTheDocument()
+    expect(input).toBeDisabled()
   })
 
-  it('renders format options', () => {
+  it('renders download button as disabled with unavailable message', () => {
     render(<MediaDownloader />)
-    expect(screen.getByText('Vídeo MP4 (Full HD)')).toBeInTheDocument()
-    expect(screen.getByText('Apenas Áudio (MP3)')).toBeInTheDocument()
+    const button = screen.getByRole('button', { name: /download indisponível/i })
+    expect(button).toBeInTheDocument()
+    expect(button).toBeDisabled()
   })
 
-  it('renders download button', () => {
+  it('informs that media download is unavailable in this version', () => {
     render(<MediaDownloader />)
-    expect(screen.getByRole('button', { name: /baixar/i })).toBeInTheDocument()
+    expect(screen.getByText(/serviço de download indisponível/i)).toBeInTheDocument()
   })
 })
