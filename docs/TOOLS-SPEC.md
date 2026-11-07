@@ -183,6 +183,15 @@ ID 63: CRC16/CCITT
 - [ ] Botão PIX integrado com AgilizaQR
 - [ ] Domínio personalizado (CNAME)
 
+### Spike de Publicação e Persistência (Issue #4)
+- **Estado Atual:** A ferramenta funciona exclusivamente em modo prévia local (in-memory), sem persistência de dados e sem geração de URLs públicas fictícias.
+- **Requisitos para Publicação:**
+  1. Autenticação aprovada (Supabase Auth com Google OAuth / Magic Link).
+  2. Banco de dados relacional com RLS (tabelas `profiles` e `links`) e validação de slug/username único.
+  3. Roteamento dinâmico em `bio.agilizatools.com.br/{username}` com fallback para perfis inexistentes.
+  4. Política de privacidade e termos de serviço publicados antes de aceitar dados e cadastros.
+- **Garantias de Produto:** Não prometer URLs ou sucesso de publicação antes que a persistência esteja formalmente conectada e confirmada.
+
 ### Row Level Security (Supabase RLS)
 ```sql
 -- profiles: leitura pública, escrita apenas pelo dono

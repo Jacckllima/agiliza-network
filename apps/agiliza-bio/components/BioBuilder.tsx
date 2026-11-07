@@ -199,9 +199,19 @@ export function BioBuilder() {
           </div>
         </div>
 
-        <p role="status" className="rounded-lg border border-amber-800/60 bg-amber-950/30 p-3 text-xs leading-relaxed text-amber-200">
-          Esta é uma prévia local. O perfil não foi publicado e ainda não tem um link compartilhável.
-        </p>
+                <div className="space-y-3 pt-2">
+          <button
+            type="button"
+            disabled
+            className="w-full py-2.5 bg-slate-800 text-slate-400 font-semibold text-xs rounded-lg cursor-not-allowed border border-slate-700/80 flex items-center justify-center gap-2"
+          >
+            <Icon name="link" className="h-4 w-4 text-slate-500" />
+            Publicação e link compartilhável indisponíveis nesta versão
+          </button>
+          <p role="status" className="rounded-lg border border-amber-800/60 bg-amber-950/30 p-3 text-xs leading-relaxed text-amber-200">
+            Esta é uma prévia local. O perfil não foi publicado e não gera um endereço acessível publicamente até a definição da camada de autenticação e armazenamento.
+          </p>
+        </div>
       </div>
 
       {/* Mobile Live Preview Column */}
