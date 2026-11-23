@@ -31,7 +31,7 @@ export default function RootLayout({
       <body className={`${inter.className} min-h-screen flex flex-col`}>
         <Header homeHref="/" />
         <main className="flex-1">{children}</main>
-        <Footer privacyHref="/privacidade" />
+        <Footer privacyHref="/privacidade" termsHref="/termos" />
       </body>
     </html>
   )
