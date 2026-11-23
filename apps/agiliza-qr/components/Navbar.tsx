@@ -1,15 +1,15 @@
 'use client'
 
 import { useState, useRef, useEffect } from 'react'
-import { Icon } from '@agiliza/ui'
+import { Icon, PORTAL_URL, TOOL_URLS } from '@agiliza/ui'
 
 const NETWORK_TOOLS = [
-  { name: 'AgilizaPDF', desc: 'Operações com PDFs indisponíveis nesta versão', href: 'https://pdf.agilizatools.com.br', icon: 'file' },
-  { name: 'AgilizaMedia', desc: 'Downloads de mídia indisponíveis nesta versão', href: 'https://media.agilizatools.com.br', icon: 'video' },
-  { name: 'AgilizaCalc', desc: 'Simulações CLT/PJ e estimativas de rescisão', href: 'https://calc.agilizatools.com.br', icon: 'calculator' },
-  { name: 'AgilizaBio', desc: 'Prévia local de uma página com links', href: 'https://bio.agilizatools.com.br', icon: 'link' },
-  { name: 'AgilizaNota', desc: 'Emissão de recibos e declarações em PDF', href: 'https://nota.agilizatools.com.br', icon: 'receipt' },
-  { name: 'AgilizaSign', desc: 'Exportação de PDFs indisponível nesta versão', href: 'https://sign.agilizatools.com.br', icon: 'penTool' },
+  { name: 'AgilizaPDF', desc: 'Operações com PDFs indisponíveis nesta versão', href: TOOL_URLS.pdf, icon: 'file' },
+  { name: 'AgilizaMedia', desc: 'Downloads de mídia indisponíveis nesta versão', href: TOOL_URLS.media, icon: 'video' },
+  { name: 'AgilizaCalc', desc: 'Simulações CLT/PJ e estimativas de rescisão', href: TOOL_URLS.calc, icon: 'calculator' },
+  { name: 'AgilizaBio', desc: 'Prévia local de uma página com links', href: TOOL_URLS.bio, icon: 'link' },
+  { name: 'AgilizaNota', desc: 'Emissão de recibos e declarações em PDF', href: TOOL_URLS.nota, icon: 'receipt' },
+  { name: 'AgilizaSign', desc: 'Exportação de PDFs indisponível nesta versão', href: TOOL_URLS.sign, icon: 'penTool' },
 ] as const
 
 export function Navbar() {
@@ -34,7 +34,7 @@ export function Navbar() {
           {/* ── 1. Lado Esquerdo (Brand / Logo) ─────────────────────────── */}
           <div className="flex items-center gap-3 shrink-0">
             <a
-              href="https://agilizatools.com.br"
+              href={PORTAL_URL}
               className="flex items-center gap-2.5 text-lg font-bold text-slate-900 transition-opacity hover:opacity-90"
               aria-label="Agiliza Tools: ver todas as ferramentas"
             >
@@ -52,7 +52,7 @@ export function Navbar() {
           {/* ── 2. Centro (Links de Navegação) ─────────────────────────── */}
           <nav className="hidden md:flex items-center gap-8 text-sm font-medium text-slate-600">
             <a
-              href="https://agilizatools.com.br"
+              href={PORTAL_URL}
               className="transition-colors hover:text-blue-600"
             >
               Início
@@ -155,7 +155,7 @@ export function Navbar() {
           <div className="border-b border-slate-200 bg-white px-4 py-4 md:hidden shadow-lg animate-fade-in">
             <nav className="flex flex-col gap-3">
               <a
-                href="https://agilizatools.com.br"
+                href={PORTAL_URL}
                 className="text-xs font-semibold text-slate-700 hover:text-blue-600"
                 onClick={() => setMobileMenuOpen(false)}
               >

@@ -132,31 +132,29 @@ Browser
 
 ### 4.1 Vercel (Apps Next.js)
 
-Cada `apps/agiliza-*` é um projeto separado no Vercel:
+Cada app em `apps/*` é um projeto separado na Vercel (time `agilizatools`), conectado ao repositório `agilizatoolsoficial/agiliza-network` (branch `main`), com `Root Directory` apontando para o respectivo diretório (`apps/web` ou `apps/agiliza-*`), preset `Next.js`, Node `24.x` e `Include files outside the root directory` habilitado.
 
-```
-vercel.json (por app)
-{
-  "framework": "nextjs",
-  "buildCommand": "cd ../.. && npx turbo run build --filter=agiliza-{tool}",
-  "outputDirectory": ".next"
-}
-```
+**Domínios definitivos (Vercel Hobby / HTTPS automático gerenciado pela Vercel):**
+| App | Projeto Vercel | Root Directory | URL Canônica |
+|-----|----------------|----------------|--------------|
+| portal (`web`) | `agiliza-network` | `apps/web` | `https://agiliza-network.vercel.app` |
+| `agiliza-pdf` | `agiliza-pdf` | `apps/agiliza-pdf` | `https://agiliza-pdf.vercel.app` |
+| `agiliza-media` | `agiliza-media` | `apps/agiliza-media` | `https://agiliza-media.vercel.app` |
+| `agiliza-calc` | `agiliza-calc` | `apps/agiliza-calc` | `https://agiliza-calc.vercel.app` |
+| `agiliza-qr` | `agiliza-qr` | `apps/agiliza-qr` | `https://agiliza-qr.vercel.app` |
+| `agiliza-bio` | `agiliza-bio` | `apps/agiliza-bio` | `https://agiliza-bio.vercel.app` |
+| `agiliza-nota` | `agiliza-nota` | `apps/agiliza-nota` | `https://agiliza-nota.vercel.app` |
+| `agiliza-img` | `agiliza-img` | `apps/agiliza-img` | `https://agiliza-img.vercel.app` |
+| `agiliza-text` | `agiliza-text` | `apps/agiliza-text` | `https://agiliza-text.vercel.app` |
+| `agiliza-dev` | `agiliza-dev` | `apps/agiliza-dev` | `https://agiliza-dev.vercel.app` |
+| `agiliza-sign` | `agiliza-sign` | `apps/agiliza-sign` | `https://agiliza-sign.vercel.app` |
 
-**Domínios:**
-| App | Domínio |
-|-----|---------|
-| portal | agilizatools.com.br |
-| agiliza-pdf | pdf.agilizatools.com.br |
-| agiliza-media | media.agilizatools.com.br |
-| agiliza-calc | calc.agilizatools.com.br |
-| agiliza-qr | qr.agilizatools.com.br |
-| agiliza-bio | bio.agilizatools.com.br / /{username} |
-| agiliza-nota | nota.agilizatools.com.br |
-| agiliza-img | img.agilizatools.com.br |
-| agiliza-text | text.agilizatools.com.br |
-| agiliza-dev | dev.agilizatools.com.br |
-| agiliza-sign | sign.agilizatools.com.br |
+**Centralização e variáveis de ambiente:**
+Todas as URLs ficam centralizadas em `packages/ui/src/config/urls.ts` e podem ser sobrescritas por variáveis de ambiente (`NEXT_PUBLIC_PORTAL_URL` e `NEXT_PUBLIC_TOOL_<ID>_URL`) caso o projeto migre para um domínio próprio no futuro.
+
+**Publicação e certificados TLS:**
+- Cada merge na branch `main` dispara automaticamente o deploy de produção na Vercel para os projetos afetados.
+- Os certificados HTTPS dos domínios `*.vercel.app` são emitidos e renovados automaticamente pela Vercel (TLS gerenciado pela plataforma, sem renovação manual).
 
 ### 4.2 Cloudflare (DNS + CDN)
 
@@ -180,7 +178,7 @@ export const metadata: Metadata = {
   },
   description: 'Descrição única com keywords alvo (150-160 chars)',
   keywords: ['keyword1', 'keyword2'],
-  authors: [{ name: 'Rede Agiliza', url: 'https://agilizatools.com.br' }],
+  authors: [{ name: 'Rede Agiliza', url: PORTAL_URL }],
   openGraph: {
     type: 'website',
     siteName: 'Agiliza Network',
@@ -191,7 +189,7 @@ export const metadata: Metadata = {
     site: '@agilizatools',
   },
   alternates: {
-    canonical: 'https://{tool}.agilizatools.com.br',
+    canonical: '/',
   },
 }
 ```
@@ -211,7 +209,7 @@ const jsonLd = {
   publisher: {
     '@type': 'Organization',
     name: 'Rede Agiliza',
-    url: 'https://agilizatools.com.br',
+    url: PORTAL_URL,
   },
 }
 ```
@@ -338,5 +336,5 @@ const securityHeaders = [
 **Motivo:** Auth completo (OAuth, Magic Link) incluído sem custo adicional. Row Level Security (RLS) nativo. Free tier generoso para MVP.
 
 ### ADR-004: Subdomínios independentes vs. paths no mesmo domínio
-**Decisão:** Subdomínios independentes (`pdf.agilizatools.com.br` vs `agilizatools.com.br/pdf`).  
+**Decisão:** Projetos e hosts independentes por app (`agiliza-pdf.vercel.app` vs `agiliza-network.vercel.app/pdf`).  
 **Motivo:** Permite deploys Vercel independentes por app, sem risco de breaking change cruzado. Cada ferramenta tem autonomia de release. Trade-off: cada subdomínio acumula autoridade SEO separadamente.

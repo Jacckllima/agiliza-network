@@ -1,8 +1,9 @@
 import type { MetadataRoute } from 'next'
+import { TOOL_URLS } from '@agiliza/ui'
 
 export default function robots(): MetadataRoute.Robots {
   return {
     rules: { userAgent: '*', allow: '/' },
-    sitemap: 'https://img.agilizatools.com.br/sitemap.xml',
+    sitemap: `${TOOL_URLS.img}/sitemap.xml`,
   }
 }

@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { Icon } from '@agiliza/ui'
+import { Icon, getPortalHost } from '@agiliza/ui'
 
 type DocType = 'recibo' | 'declaracao'
 
@@ -270,7 +270,7 @@ export function DocumentGenerator() {
           )}
 
           <div className="text-center pt-8 border-t border-slate-200 text-[9px] text-slate-400">
-            Documento gerado via AgilizaNota. www.agilizatools.com.br
+            Documento gerado via AgilizaNota. {getPortalHost()}
           </div>
         </div>
       </div>

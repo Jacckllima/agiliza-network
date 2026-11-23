@@ -1,9 +1,10 @@
 import type { MetadataRoute } from 'next'
+import { TOOL_URLS } from '@agiliza/ui'
 
 export default function sitemap(): MetadataRoute.Sitemap {
   return [
     {
-      url: 'https://nota.agilizatools.com.br',
+      url: TOOL_URLS.nota,
       lastModified: new Date(),
       changeFrequency: 'weekly',
       priority: 1,
