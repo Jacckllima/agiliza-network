@@ -12,6 +12,7 @@ import {
   validateRecibo,
 } from '../lib/document-formatters'
 import type { DeclarationItem } from '../lib/document-formatters'
+import { downloadDeclaracaoPdf, downloadReciboPdf } from '../lib/pdf-generator'
 
 type DocType = 'recibo' | 'declaracao' | 'nfe'
 
@@ -142,6 +143,57 @@ export function DocumentGenerator() {
       setDataDoc(getTodayBR())
       setItens([{ id: 'item-1', desc: '', qtd: 1, valor: 0 }])
       setStatusMessage('Campos da declaração limpos.')
+    }
+  }
+
+  const [isExporting, setIsExporting] = useState(false)
+
+  const handleDownloadPdf = () => {
+    if (docType === 'nfe') return
+    setShowErrors(true)
+    if (hasErrors) {
+      setStatusMessage('Revise os campos obrigatórios destacados antes de baixar o PDF.')
+      return
+    }
+
+    setIsExporting(true)
+    try {
+      const host = getPortalHost()
+      const filename =
+        docType === 'recibo'
+          ? downloadReciboPdf(
+              {
+                numero: numeroRecibo,
+                emissorNome,
+                emissorDoc,
+                pagadorNome,
+                pagadorDoc,
+                valor,
+                referente,
+                cidade,
+                dataDoc,
+              },
+              host,
+            )
+          : downloadDeclaracaoPdf(
+              {
+                remetenteNome: emissorNome,
+                remetenteDoc: emissorDoc,
+                remetenteEnd,
+                destinatarioNome,
+                destinatarioDoc,
+                destinatarioEnd,
+                cidade,
+                dataDoc,
+                itens,
+              },
+              host,
+            )
+      setStatusMessage(`PDF gerado e baixado: ${filename}`)
+    } catch {
+      setStatusMessage('Não foi possível gerar o PDF. Tente novamente ou use a opção Imprimir.')
+    } finally {
+      setIsExporting(false)
     }
   }
 
@@ -562,18 +614,27 @@ export function DocumentGenerator() {
             <div className="flex flex-col gap-2.5 pt-2 sm:flex-row">
               <button
                 type="button"
+                onClick={handleDownloadPdf}
+                disabled={isExporting}
+                className="flex flex-1 items-center justify-center gap-2 rounded-lg bg-blue-600 px-4 py-3 text-xs font-bold text-white shadow-sm transition-colors hover:bg-blue-500 disabled:opacity-60"
+              >
+                <Icon name="download" className="h-4 w-4" />
+                <span>{isExporting ? 'Gerando PDF...' : 'Baixar PDF'}</span>
+              </button>
+              <button
+                type="button"
                 onClick={handlePrint}
-                className="flex flex-1 items-center justify-center gap-2 rounded-lg bg-blue-600 px-4 py-3 text-xs font-bold text-white shadow-sm transition-colors hover:bg-blue-500"
+                className="flex items-center justify-center gap-2 rounded-lg border border-slate-700 bg-slate-950 px-4 py-3 text-xs font-semibold text-slate-300 transition-colors hover:bg-slate-800 hover:text-white"
               >
                 <Icon name="printer" className="h-4 w-4" />
-                <span>Imprimir / Salvar em PDF</span>
+                <span>Imprimir</span>
               </button>
               <button
                 type="button"
                 onClick={handleClearForm}
                 className="rounded-lg border border-slate-700 bg-slate-950 px-4 py-3 text-xs font-semibold text-slate-300 transition-colors hover:bg-slate-800 hover:text-white"
               >
-                Limpar campos
+                Limpar
               </button>
             </div>
 

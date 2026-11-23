@@ -9,10 +9,11 @@
     "start": "next start --port 3006",
     "lint": "eslint --max-warnings 0",
     "check-types": "next typegen && tsc --noEmit",
-    "test": "jest --ci"
+    "test": "node --test lib/pdf-generator.test.ts && jest --ci --testPathIgnorePatterns=lib/pdf-generator.test.ts"
   },
   "dependencies": {
     "@agiliza/ui": "*",
+    "jspdf": "^4.2.1",
     "next": "16.3.2",
     "react": "19.2.8",
     "react-dom": "19.2.8"
