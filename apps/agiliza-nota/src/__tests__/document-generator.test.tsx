@@ -71,12 +71,19 @@ describe('DocumentGenerator', () => {
     expect(screen.getByText(/PDF gerado e baixado: recibo-pagamento-0001.pdf/i)).toBeInTheDocument()
   })
 
-  it('shows honest status notice on NF-e / DANFE tab', () => {
+  it('renders NF-e / DANFE tab with XML upload and 44-digit key validation', () => {
     render(<DocumentGenerator />)
 
     const nfeTab = screen.getByRole('tab', { name: /NF-e \/ DANFE/i })
     fireEvent.click(nfeTab)
 
-    expect(screen.getByRole('status')).toHaveTextContent(/em desenvolvimento/i)
+    expect(screen.getByLabelText(/Chave de acesso da NF-e/i)).toBeInTheDocument()
+
+    fireEvent.change(screen.getByLabelText(/Chave de acesso da NF-e/i), {
+      target: { value: '12345' },
+    })
+    fireEvent.click(screen.getByRole('button', { name: /Validar chave/i }))
+
+    expect(screen.getByRole('alert')).toHaveTextContent(/44 dígitos numéricos/i)
   })
 })
