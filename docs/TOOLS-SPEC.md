@@ -218,23 +218,23 @@ CREATE POLICY "Users can manage own links"
 ## AgilizaNota (`apps/agiliza-nota`)
 
 **URL:** `agiliza-nota.vercel.app`  
-**Keyword Alvo Principal:** "gerar recibo de pagamento online grátis"  
-**Processamento:** 100% Client-Side
+**Keyword Alvo Principal:** "gerar recibo de pagamento e danfe nfe em pdf"  
+**Processamento:** Client-Side para Recibo, Declaração de Conteúdo e XML de NF-e (consulta externa por chave de acesso condicionada ao Spike #25)  
+**Especificação detalhada:** [docs/AGILIZA-NOTA-SPEC.md](./AGILIZA-NOTA-SPEC.md)
 
-### Funcionalidades MVP
-- [ ] **Recibo de Pagamento** — prestador/cliente, serviço, valor, data, local
-- [ ] **Declaração de Conteúdo** — para envios pelos Correios (exigência ECT)
-- [ ] **Contrato de Prestação de Serviço** — modelo simples editável
-- [ ] Export como PDF (jsPDF)
-- [ ] Templates prontos por categoria (MEI, freelancer, aluguel)
+### Estado Atual (Implementado)
+- [x] **Recibo de Pagamento** (prévia HTML e impressão via navegador)
+- [x] **Declaração de Conteúdo** (prévia HTML e impressão via navegador)
 
-### Dependências
-```json
-{
-  "jspdf": "^2.5.1",
-  "jspdf-autotable": "^3.8.1"
-}
-```
+### Evolução Planejada (Versão Gratuita: 1 documento/nota por vez)
+- [ ] Padronização visual, acessibilidade, máscaras e validações inline (#24)
+- [ ] Download direto de PDF no cliente para Recibo e Declaração (#26)
+- [ ] Spike de consulta de NF-e por chave de acesso de 44 dígitos (#25)
+- [ ] Aba NF-e/DANFE com upload de XML (1 por vez) e validação módulo 11 da chave (#27)
+- [ ] Geração e download de DANFE em PDF com código de barras Code 128 (#28)
+
+### Evolução Futura (Fora do Escopo Atual)
+- Download em lote e experiência sem anúncios reservados para futura versão paga mensal.
 
 ---
 
