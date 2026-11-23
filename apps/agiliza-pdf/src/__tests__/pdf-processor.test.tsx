@@ -1,6 +1,7 @@
 import '@testing-library/jest-dom'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { PDFProcessor } from '../../components/PDFProcessor'
+import { extractTextFromPdfBytes } from '../../lib/pdf-to-media'
 
 jest.mock('../../lib/pdf-operations', () => ({
   inspectPdfBytes: jest.fn(async () => ({ pageCount: 3 })),
@@ -23,8 +24,41 @@ jest.mock('../../lib/pdf-operations', () => ({
   parsePageRange: jest.fn(() => [1, 2]),
 }))
 
+jest.mock('../../lib/pdf-to-media', () => ({
+  MAX_RENDER_PAGES: 50,
+  buildPageImageFilename: jest.fn(
+    (name: string, page: number, fmt: string) => `${name}-${page}.${fmt}`,
+  ),
+  buildExtractedTextFilename: jest.fn((name: string) => `${name}.txt`),
+  getRenderablePageWindow: jest.fn((total: number) => ({
+    pages: Array.from({ length: Math.min(total, 6) }, (_, i) => i + 1),
+    maxAllowedPages: Math.min(total, 50),
+    totalBatches: Math.ceil(Math.min(total, 50) / 6),
+    isTruncated: total > 50,
+  })),
+  renderPdfBatchThumbnails: jest.fn(async () => [
+    { pageNumber: 1, dataUrl: 'data:image/jpeg;base64,abc', width: 200, height: 300 },
+  ]),
+  renderPdfPageToImage: jest.fn(async () => ({
+    pageNumber: 1,
+    dataUrl: 'data:image/png;base64,xyz',
+    width: 800,
+    height: 1100,
+  })),
+  extractTextFromPdfBytes: jest.fn(async () => ({
+    pageCount: 3,
+    processedPages: 3,
+    truncated: false,
+    pages: [{ pageNumber: 1, text: 'Conteúdo extraído' }],
+    combinedText: '=== Página 1 ===\nConteúdo extraído',
+    hasSelectableText: true,
+  })),
+}))
+
 jest.mock('../../lib/browser-download', () => ({
   downloadBytesAsFile: jest.fn(),
+  downloadDataUrlAsFile: jest.fn(),
+  downloadTextAsFile: jest.fn(),
 }))
 
 describe('PDFProcessor', () => {
@@ -105,5 +139,62 @@ describe('PDFProcessor', () => {
 
     fireEvent.click(screen.getByRole('button', { name: /Remover páginas/i }))
     expect(screen.getByLabelText(/Páginas para remover/i)).toBeInTheDocument()
+  })
+
+  it('converts PDF pages to images and extracts text in Converter de PDF tab', async () => {
+    render(<PDFProcessor />)
+
+    fireEvent.click(screen.getByRole('tab', { name: /Converter de PDF/i }))
+
+    const input = screen.getByLabelText(/Envie 1 arquivo PDF para converter/i)
+    const pdfFile = new File(['%PDF-1.4 sample'], 'relatorio.pdf', {
+      type: 'application/pdf',
+    })
+    fireEvent.change(input, { target: { files: [pdfFile] } })
+
+    await waitFor(() => {
+      expect(
+        screen.getByRole('button', { name: /Baixar página 1 \(PNG\)/i }),
+      ).toBeInTheDocument()
+    })
+
+    fireEvent.click(
+      screen.getByRole('button', { name: /Baixar página 1 \(PNG\)/i }),
+    )
+    await waitFor(() => {
+      expect(screen.getByText(/Página 1 exportada em PNG/i)).toBeInTheDocument()
+    })
+
+    fireEvent.click(
+      screen.getByRole('button', { name: /PDF para Texto \(\.txt\)/i }),
+    )
+    fireEvent.click(
+      screen.getByRole('button', { name: /Extrair texto do PDF/i }),
+    )
+
+    await waitFor(() => {
+      expect(
+        screen.getByLabelText(/Texto extraído/i),
+      ).toHaveValue('=== Página 1 ===\nConteúdo extraído')
+    })
+
+    // Verifica aviso para PDF escaneado sem camada de texto
+    ;(extractTextFromPdfBytes as jest.Mock).mockResolvedValueOnce({
+      pageCount: 1,
+      processedPages: 1,
+      truncated: false,
+      pages: [{ pageNumber: 1, text: '' }],
+      combinedText: '',
+      hasSelectableText: false,
+    })
+
+    fireEvent.click(
+      screen.getByRole('button', { name: /Extrair texto do PDF/i }),
+    )
+    await waitFor(() => {
+      expect(
+        screen.getByText(/Nenhum texto selecionável foi encontrado/i),
+      ).toBeInTheDocument()
+    })
   })
 })
