@@ -5,6 +5,7 @@ import { Card, Icon, type IconName } from '@agiliza/ui'
 import { FileDropzone } from './FileDropzone'
 import { OrganizePdfPanel } from './OrganizePdfPanel'
 import { ConvertFromPdfPanel } from './ConvertFromPdfPanel'
+import { ConvertToPdfPanel } from './ConvertToPdfPanel'
 import { MAX_MERGE_FILES } from '../lib/file-validation'
 
 export type PdfWorkspaceTab =
@@ -228,6 +229,8 @@ export function PDFProcessor() {
           <OrganizePdfPanel />
         ) : currentTab.id === 'de-pdf' ? (
           <ConvertFromPdfPanel />
+        ) : currentTab.id === 'para-pdf' ? (
+          <ConvertToPdfPanel />
         ) : (
           <>
             <FileDropzone
