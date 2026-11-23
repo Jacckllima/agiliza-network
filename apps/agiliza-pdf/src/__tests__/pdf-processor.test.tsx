@@ -61,6 +61,17 @@ jest.mock('../../lib/browser-download', () => ({
   downloadTextAsFile: jest.fn(),
 }))
 
+jest.mock('../../lib/convert-to-pdf', () => ({
+  convertImagesToPdf: jest.fn(async () => ({
+    bytes: new Uint8Array([37, 80, 68, 70, 45]),
+    pageCount: 2,
+  })),
+  convertTextToPdf: jest.fn(async () => ({
+    bytes: new Uint8Array([37, 80, 68, 70, 45]),
+    pageCount: 1,
+  })),
+}))
+
 describe('PDFProcessor', () => {
   it('renders accessible tablist and switches between workspaces', () => {
     render(<PDFProcessor />)
@@ -195,6 +206,44 @@ describe('PDFProcessor', () => {
       expect(
         screen.getByText(/Nenhum texto selecionável foi encontrado/i),
       ).toBeInTheDocument()
+    })
+  })
+
+  it('converts images and text to PDF in Converter em PDF tab', async () => {
+    render(<PDFProcessor />)
+
+    fireEvent.click(screen.getByRole('tab', { name: /Converter em PDF/i }))
+
+    const imgInput = screen.getByLabelText(/Arraste imagens JPG, PNG ou WebP/i)
+    const img1 = new File(['png-1'], 'foto-1.png', { type: 'image/png' })
+    const img2 = new File(['jpg-2'], 'foto-2.jpg', { type: 'image/jpeg' })
+    fireEvent.change(imgInput, { target: { files: [img1, img2] } })
+
+    expect(screen.getByText('foto-1.png')).toBeInTheDocument()
+    expect(screen.getByText('foto-2.jpg')).toBeInTheDocument()
+
+    fireEvent.click(
+      screen.getByRole('button', { name: /Converter imagens e baixar PDF/i }),
+    )
+    await waitFor(() => {
+      expect(screen.getByText(/PDF gerado com 2 páginas/i)).toBeInTheDocument()
+    })
+
+    fireEvent.click(
+      screen.getByRole('button', { name: /Texto para PDF/i }),
+    )
+    fireEvent.change(screen.getByLabelText(/Título do documento/i), {
+      target: { value: 'Ata de Reunião' },
+    })
+    fireEvent.change(screen.getByLabelText(/Conteúdo do texto/i), {
+      target: { value: 'Acentuação completa: ação, coração, relatório.' },
+    })
+    fireEvent.click(
+      screen.getByRole('button', { name: /Gerar PDF do texto/i }),
+    )
+
+    await waitFor(() => {
+      expect(screen.getByText(/PDF de texto gerado/i)).toBeInTheDocument()
     })
   })
 })
