@@ -8,7 +8,8 @@
     "build": "next build",
     "start": "next start --port 3003",
     "lint": "eslint --max-warnings 0",
-    "check-types": "next typegen && tsc --noEmit"
+    "check-types": "next typegen && tsc --noEmit",
+    "test": "node --test lib/calculations.test.ts"
   },
   "dependencies": {
     "@agiliza/ui": "*",

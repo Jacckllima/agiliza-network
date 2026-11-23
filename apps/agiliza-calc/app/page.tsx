@@ -5,7 +5,7 @@ export default function CalcPage() {
   return (
     <div className="w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10 flex flex-col items-center">
       <section className="text-center mb-8 w-full flex flex-col items-center">
-        <div className="inline-flex items-center gap-1.5 rounded-full bg-blue-950 border border-blue-800/60 px-3.5 py-1 text-xs font-semibold text-blue-300 mb-3">
+        <div className="inline-flex items-center gap-1.5 rounded-md bg-blue-950 border border-blue-800/60 px-3.5 py-1 text-xs font-semibold text-blue-300 mb-3">
           <Icon name="calculator" className="h-4 w-4" />
           <span>CLT/PJ, rescisão e juros compostos</span>
         </div>
