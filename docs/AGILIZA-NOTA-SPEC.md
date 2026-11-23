@@ -54,7 +54,7 @@ Para evitar confusão entre o que já está publicado e o que será entregue nas
   - Extrai no navegador: chave de acesso, protocolo de autorização (`protNFe`), natureza da operação, data de emissão, emitente, destinatário, itens/produtos, totais e impostos, transporte e informações complementares.
 - **Entrada 2 (Chave de Acesso de 44 Dígitos):**
   - Validação e decodificação imediata no cliente: verificação de 44 dígitos numéricos, dígito verificador (módulo 11) e extração de metadados (UF, AAMM, CNPJ do emitente, modelo 55/65, série e número).
-  - A forma de obtenção do XML completo apenas pela chave (integração externa autorizada vs. fallback orientando o envio do XML) será definida no **Spike #25**, descartando qualquer contorno de CAPTCHA ou scraping não autorizado.
+  - A forma de obtenção do XML completo apenas pela chave (integração externa autorizada vs. fallback orientando o envio do XML) está definida em [docs/NFE-ACCESS-KEY-SPIKE.md](./NFE-ACCESS-KEY-SPIKE.md) (Issue #25), descartando qualquer contorno de CAPTCHA ou scraping não autorizado.
 - **Saída (#28):**
   - Prévia estruturada do DANFE na interface e download direto de 1 arquivo `.pdf` (`danfe-<numero-ou-chave>.pdf`) contendo código de barras Code 128 da chave de 44 dígitos, blocos oficiais do DANFE e paginação automática para notas com muitos itens.
 
