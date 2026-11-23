@@ -18,8 +18,12 @@ export type { ToolId, ToolMeta } from './types/tools'
 export type { IconName, IconProps } from './icon'
 export { TOOLS } from './types/tools'
 export {
+  CONTACT_EMAIL,
+  DEFAULT_CONTACT_EMAIL,
   DEFAULT_PORTAL_URL,
   DEFAULT_TOOL_URLS,
+  GITHUB_ISSUES_URL,
+  GITHUB_REPO_URL,
   PORTAL_URL,
   TOOL_URLS,
   getPortalHost,

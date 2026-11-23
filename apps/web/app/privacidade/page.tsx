@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import { Container, Card, Icon, getToolHost } from '@agiliza/ui'
+import { Container, Card, Icon, CONTACT_EMAIL, getToolHost } from '@agiliza/ui'
 
 export const metadata: Metadata = {
   title: 'Política de Privacidade | Agiliza Tools',
@@ -226,8 +226,14 @@ export default function PrivacyPolicyPage() {
             </p>
             <p>
               Para esclarecer dúvidas técnicas sobre privacidade, sugerir aprimoramentos ou reportar
-              eventuais inconsistências, você pode entrar em contato através do repositório oficial do
-              projeto no GitHub (
+              eventuais inconsistências, você pode escrever para{' '}
+              <a
+                href={`mailto:${CONTACT_EMAIL}`}
+                className="font-medium text-blue-600 underline hover:text-blue-700 dark:text-blue-400"
+              >
+                {CONTACT_EMAIL}
+              </a>
+              , abrir uma issue no repositório oficial do projeto no GitHub (
               <a
                 href="https://github.com/agilizatoolsoficial/agiliza-network"
                 target="_blank"
@@ -236,7 +242,14 @@ export default function PrivacyPolicyPage() {
               >
                 github.com/agilizatoolsoficial/agiliza-network
               </a>
-              ) ou pelo canal de comunicação institucional da Rede Agiliza.
+              ) ou acessar a página de{' '}
+              <Link
+                href="/contato"
+                className="font-medium text-blue-600 underline hover:text-blue-700 dark:text-blue-400"
+              >
+                Contato
+              </Link>
+              .
             </p>
           </div>
         </Card>
