@@ -1,15 +1,17 @@
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
-import { Header, Footer } from '@agiliza/ui'
+import { Header, Footer, PORTAL_URL } from '@agiliza/ui'
 import './globals.css'
 
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
+  metadataBase: new URL(PORTAL_URL),
   title: 'Agiliza Tools: QR Codes, imagens, textos e cálculos',
   description: 'Crie QR Codes, converta imagens, conte palavras, formate JSON e compare cenários financeiros.',
   keywords: ['ferramentas online', 'agiliza tools', 'gerador qr code pix', 'conversor de imagens', 'calculadora clt pj', 'gerar cpf para testes'],
-  authors: [{ name: 'Rede Agiliza', url: 'https://agilizatools.com.br' }],
+  authors: [{ name: 'Rede Agiliza', url: PORTAL_URL }],
+  alternates: { canonical: '/' },
   openGraph: {
     type: 'website',
     siteName: 'Agiliza Tools',

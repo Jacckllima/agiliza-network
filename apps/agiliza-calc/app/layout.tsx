@@ -1,15 +1,17 @@
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
-import { Header, Footer } from '@agiliza/ui'
+import { Header, Footer, PORTAL_URL, TOOL_URLS } from '@agiliza/ui'
 import './globals.css'
 
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
+  metadataBase: new URL(TOOL_URLS.calc),
   title: 'AgilizaCalc: simulações CLT/PJ, rescisão e juros',
   description: 'Compare cenários de trabalho, estime rescisão e calcule juros compostos com as premissas exibidas.',
   keywords: ['calculadora clt pj', 'calcular rescisão', 'calculadora juros compostos', 'calcular fgts'],
-  authors: [{ name: 'Rede Agiliza', url: 'https://agilizatools.com.br' }],
+  authors: [{ name: 'Rede Agiliza', url: PORTAL_URL }],
+  alternates: { canonical: '/' },
   openGraph: {
     type: 'website',
     siteName: 'Agiliza Network',

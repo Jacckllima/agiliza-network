@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react'
 import { Icon } from '../icon'
+import { PORTAL_URL } from '../config/urls'
 import { TOOLS } from '../types/tools'
 import type { ToolId, ToolMeta } from '../types/tools'
 
@@ -74,9 +75,9 @@ const productivity = TOOLS.filter((tool) => PRODUCTIVITY_TOOL_IDS.includes(tool.
 
 export function Footer({
   currentTool,
-  privacyHref = 'https://agilizatools.com.br/privacidade',
-  termsHref = 'https://agilizatools.com.br/termos',
-  contactHref = 'https://agilizatools.com.br/contato',
+  privacyHref = `${PORTAL_URL}/privacidade`,
+  termsHref = `${PORTAL_URL}/termos`,
+  contactHref = `${PORTAL_URL}/contato`,
 }: FooterProps) {
   const year = new Date().getFullYear()
 
@@ -89,7 +90,7 @@ export function Footer({
               <span id="footer-about-title">Sobre</span>
             </FooterSectionTitle>
             <a
-              href="https://agilizatools.com.br"
+              href={PORTAL_URL}
               className="mt-4 inline-flex items-center gap-2 text-sm font-bold text-slate-900 transition-colors hover:text-blue-700 dark:text-white dark:hover:text-blue-300"
               aria-label="Agiliza Tools, página inicial"
             >

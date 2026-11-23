@@ -1,11 +1,12 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import { Container, Card, Icon } from '@agiliza/ui'
+import { Container, Card, Icon, getToolHost } from '@agiliza/ui'
 
 export const metadata: Metadata = {
   title: 'Política de Privacidade | Agiliza Tools',
   description:
     'Conheça o fluxo técnico de tratamento de dados, processamento no navegador e diretrizes de privacidade das ferramentas da Rede Agiliza.',
+  alternates: { canonical: '/privacidade' },
 }
 
 export default function PrivacyPolicyPage() {
@@ -69,7 +70,7 @@ export default function PrivacyPolicyPage() {
           <div className="mt-6 divide-y divide-slate-200 dark:divide-slate-800">
             <article className="py-4 first:pt-0">
               <h3 className="text-base font-semibold text-slate-900 dark:text-white">
-                Agiliza PDF (pdf.agilizatools.com.br)
+                Agiliza PDF ({getToolHost('pdf')})
               </h3>
               <p className="mt-1 text-sm text-slate-600 dark:text-slate-300">
                 Divisão, mesclagem e inspeção de páginas ocorrem exclusivamente na memória do navegador
@@ -80,7 +81,7 @@ export default function PrivacyPolicyPage() {
 
             <article className="py-4">
               <h3 className="text-base font-semibold text-slate-900 dark:text-white">
-                Agiliza Assinador (sign.agilizatools.com.br)
+                Agiliza Assinador ({getToolHost('sign')})
               </h3>
               <p className="mt-1 text-sm text-slate-600 dark:text-slate-300">
                 A aplicação de rubricas, assinaturas manuais e carimbos é desenhada e renderizada no
@@ -91,7 +92,7 @@ export default function PrivacyPolicyPage() {
 
             <article className="py-4">
               <h3 className="text-base font-semibold text-slate-900 dark:text-white">
-                Agiliza Img (img.agilizatools.com.br)
+                Agiliza Img ({getToolHost('img')})
               </h3>
               <p className="mt-1 text-sm text-slate-600 dark:text-slate-300">
                 Redimensionamento, recorte e conversão de formato (PNG, JPEG, WebP) ocorrem por meio dos
@@ -101,7 +102,7 @@ export default function PrivacyPolicyPage() {
 
             <article className="py-4">
               <h3 className="text-base font-semibold text-slate-900 dark:text-white">
-                Agiliza QR (qr.agilizatools.com.br)
+                Agiliza QR ({getToolHost('qr')})
               </h3>
               <p className="mt-1 text-sm text-slate-600 dark:text-slate-300">
                 Textos, chaves Pix e credenciais de rede Wi-Fi são convertidos em matrizes de QR Code
@@ -111,7 +112,7 @@ export default function PrivacyPolicyPage() {
 
             <article className="py-4">
               <h3 className="text-base font-semibold text-slate-900 dark:text-white">
-                Agiliza Calc (calc.agilizatools.com.br)
+                Agiliza Calc ({getToolHost('calc')})
               </h3>
               <p className="mt-1 text-sm text-slate-600 dark:text-slate-300">
                 Cálculos de comparação CLT e PJ, benefícios e descontos são efetuados no dispositivo.
@@ -121,7 +122,7 @@ export default function PrivacyPolicyPage() {
 
             <article className="py-4">
               <h3 className="text-base font-semibold text-slate-900 dark:text-white">
-                Agiliza Nota (nota.agilizatools.com.br)
+                Agiliza Nota ({getToolHost('nota')})
               </h3>
               <p className="mt-1 text-sm text-slate-600 dark:text-slate-300">
                 Formulários para emissão de recibos e declarações permanecem na memória da sessão até a
@@ -131,7 +132,7 @@ export default function PrivacyPolicyPage() {
 
             <article className="py-4">
               <h3 className="text-base font-semibold text-slate-900 dark:text-white">
-                Agiliza Text (text.agilizatools.com.br)
+                Agiliza Text ({getToolHost('text')})
               </h3>
               <p className="mt-1 text-sm text-slate-600 dark:text-slate-300">
                 Contagem de caracteres, palavras, linhas e transformação de maiúsculas e minúsculas são
@@ -141,7 +142,7 @@ export default function PrivacyPolicyPage() {
 
             <article className="py-4">
               <h3 className="text-base font-semibold text-slate-900 dark:text-white">
-                Agiliza Dev (dev.agilizatools.com.br)
+                Agiliza Dev ({getToolHost('dev')})
               </h3>
               <p className="mt-1 text-sm text-slate-600 dark:text-slate-300">
                 Formatador de JSON, codificador base64 e gerador ou validador de CPF funcionam localmente.
@@ -152,7 +153,7 @@ export default function PrivacyPolicyPage() {
 
             <article className="py-4">
               <h3 className="text-base font-semibold text-slate-900 dark:text-white">
-                Agiliza Bio (bio.agilizatools.com.br)
+                Agiliza Bio ({getToolHost('bio')})
               </h3>
               <p className="mt-1 text-sm text-slate-600 dark:text-slate-300">
                 Rascunhos de páginas de biografia e links salvam preferências temporariamente no
@@ -162,7 +163,7 @@ export default function PrivacyPolicyPage() {
 
             <article className="py-4 last:pb-0">
               <h3 className="text-base font-semibold text-slate-900 dark:text-white">
-                Agiliza Mídia (media.agilizatools.com.br)
+                Agiliza Mídia ({getToolHost('media')})
               </h3>
               <p className="mt-1 text-sm text-slate-600 dark:text-slate-300">
                 A ferramenta funciona como página de orientações sobre links e especificações de mídia.

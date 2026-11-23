@@ -17,3 +17,12 @@ export { Icon } from './icon'
 export type { ToolId, ToolMeta } from './types/tools'
 export type { IconName, IconProps } from './icon'
 export { TOOLS } from './types/tools'
+export {
+  DEFAULT_PORTAL_URL,
+  DEFAULT_TOOL_URLS,
+  PORTAL_URL,
+  TOOL_URLS,
+  getPortalHost,
+  getToolHost,
+  getToolUrl,
+} from './config/urls'

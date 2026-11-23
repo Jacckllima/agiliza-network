@@ -21,7 +21,7 @@ As regras abaixo foram definidas pelo usuário em 2026-10-26 e devem orientar no
 9. Não usar fotografias sintéticas ou retratos falsos gerados por IA.
 10. Não adicionar cursores personalizados nem animações de cursor.
 11. Não inventar contadores; contagens calculadas com dados reais da sessão são permitidas.
-12. Usar domínio próprio para o projeto; verificar propriedade e configuração antes de assumir que um host está pronto para publicação.
+12. Usar os domínios gratuitos da Vercel (`*.vercel.app`) configurados no time `agilizatools` e centralizados em `packages/ui/src/config/urls.ts`; verificar propriedade e configuração antes de assumir que um host está pronto para publicação.
 13. Fornecer favicon ao portal e a cada ferramenta.
 14. Não exibir selo ou texto “feito com IA”.
 15. Publicar política de privacidade baseada nos fluxos reais e revisada antes do lançamento.

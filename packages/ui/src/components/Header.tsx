@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect, useCallback } from 'react'
 import type { ToolId } from '../types/tools'
 import { TOOLS } from '../types/tools'
+import { PORTAL_URL } from '../config/urls'
 import { ThemeToggle } from '../theme-toggle'
 import { Icon } from '../icon'
 
@@ -11,7 +12,7 @@ export interface HeaderProps {
   homeHref?: string
 }
 
-export function Header({ currentTool, homeHref = 'https://agilizatools.com.br' }: HeaderProps) {
+export function Header({ currentTool, homeHref = PORTAL_URL }: HeaderProps) {
   const [menuOpen, setMenuOpen] = useState(false)
   const [dropdownOpen, setDropdownOpen] = useState(false)
   const [touchActive, setTouchActive] = useState(false)

@@ -6,7 +6,7 @@
 
 ## AgilizaPDF (`apps/agiliza-pdf`)
 
-**URL:** `pdf.agilizatools.com.br`  
+**URL:** `agiliza-pdf.vercel.app`  
 **Keyword Alvo Principal:** "comprimir PDF grátis online"  
 **Processamento:** 100% Client-Side
 
@@ -39,7 +39,7 @@
 
 ## AgilizaMedia (`apps/agiliza-media`)
 
-**URL:** `media.agilizatools.com.br`  
+**URL:** `agiliza-media.vercel.app`  
 **Keyword Alvo Principal:** "baixar vídeo do Instagram sem marca d'água"  
 **Processamento:** Serverless (Render/Fly.io)
 
@@ -79,7 +79,7 @@ GET  /api/file/{id}   : stream do arquivo final
 
 ## AgilizaCalc (`apps/agiliza-calc`)
 
-**URL:** `calc.agilizatools.com.br`  
+**URL:** `agiliza-calc.vercel.app`  
 **Keyword Alvo Principal:** "calculadora CLT vs PJ 2025"  
 **Processamento:** 100% Client-Side (puro JavaScript)
 
@@ -116,7 +116,7 @@ GET  /api/file/{id}   : stream do arquivo final
 
 ## AgilizaQR (`apps/agiliza-qr`)
 
-**URL:** `qr.agilizatools.com.br`  
+**URL:** `agiliza-qr.vercel.app`  
 **Keyword Alvo Principal:** "gerar QR Code Pix grátis"  
 **Processamento:** 100% Client-Side
 
@@ -163,7 +163,7 @@ ID 63: CRC16/CCITT
 
 ## AgilizaBio (`apps/agiliza-bio`)
 
-**URL:** `bio.agilizatools.com.br` / `bio.agilizatools.com.br/{username}`  
+**URL:** `agiliza-bio.vercel.app` / `agiliza-bio.vercel.app/{username}`  
 **Keyword Alvo Principal:** "criar página de links grátis Linktree alternativa"  
 **Processamento:** Client-Side + Supabase
 
@@ -173,7 +173,7 @@ ID 63: CRC16/CCITT
 - [ ] Adicionar/editar/reordenar/remover links (drag & drop)
 - [ ] Foto de perfil + bio de 150 chars
 - [ ] 3 temas visuais (dark, light, brand)
-- [ ] Página pública em `bio.agilizatools.com.br/{username}`
+- [ ] Página pública em `agiliza-bio.vercel.app/{username}`
 - [ ] Contador de cliques por link
 
 ### Funcionalidades Futuras
@@ -188,7 +188,7 @@ ID 63: CRC16/CCITT
 - **Requisitos para Publicação:**
   1. Autenticação aprovada (Supabase Auth com Google OAuth / Magic Link).
   2. Banco de dados relacional com RLS (tabelas `profiles` e `links`) e validação de slug/username único.
-  3. Roteamento dinâmico em `bio.agilizatools.com.br/{username}` com fallback para perfis inexistentes.
+  3. Roteamento dinâmico em `agiliza-bio.vercel.app/{username}` com fallback para perfis inexistentes.
   4. Política de privacidade e termos de serviço publicados antes de aceitar dados e cadastros.
 - **Garantias de Produto:** Não prometer URLs ou sucesso de publicação antes que a persistência esteja formalmente conectada e confirmada.
 
@@ -217,7 +217,7 @@ CREATE POLICY "Users can manage own links"
 
 ## AgilizaNota (`apps/agiliza-nota`)
 
-**URL:** `nota.agilizatools.com.br`  
+**URL:** `agiliza-nota.vercel.app`  
 **Keyword Alvo Principal:** "gerar recibo de pagamento online grátis"  
 **Processamento:** 100% Client-Side
 
@@ -240,7 +240,7 @@ CREATE POLICY "Users can manage own links"
 
 ## AgilizaImg (`apps/agiliza-img`)
 
-**URL:** `img.agilizatools.com.br`  
+**URL:** `agiliza-img.vercel.app`  
 **Keyword Alvo Principal:** "comprimir imagem online grátis sem perda"  
 **Processamento:** 100% Client-Side (Canvas API + WASM)
 
@@ -269,7 +269,7 @@ CREATE POLICY "Users can manage own links"
 
 ## AgilizaText (`apps/agiliza-text`)
 
-**URL:** `text.agilizatools.com.br`  
+**URL:** `agiliza-text.vercel.app`  
 **Keyword Alvo Principal:** "contar caracteres palavras online"  
 **Processamento:** 100% Client-Side (puro JavaScript)
 
@@ -291,7 +291,7 @@ CREATE POLICY "Users can manage own links"
 
 ## AgilizaDev (`apps/agiliza-dev`)
 
-**URL:** `dev.agilizatools.com.br`  
+**URL:** `agiliza-dev.vercel.app`  
 **Keyword Alvo Principal:** "gerar CPF CNPJ válido para testes"  
 **Processamento:** 100% Client-Side
 
@@ -318,7 +318,7 @@ CREATE POLICY "Users can manage own links"
 
 ## AgilizaSign (`apps/agiliza-sign`)
 
-**URL:** `sign.agilizatools.com.br`  
+**URL:** `agiliza-sign.vercel.app`  
 **Keyword Alvo Principal:** "assinar PDF online grátis sem cadastro"  
 **Processamento:** 100% Client-Side
 
