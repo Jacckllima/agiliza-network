@@ -67,7 +67,7 @@ export const TOOLS: ToolMeta[] = [
     id: 'nota',
     name: 'AgilizaNota',
     label: 'Nota',
-    description: 'Gera recibos e declarações de conteúdo em PDF',
+    description: 'Gera recibos, declarações de conteúdo e DANFE de NF-e em PDF',
     href: TOOL_URLS.nota,
     icon: 'receipt',
   },

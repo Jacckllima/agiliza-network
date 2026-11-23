@@ -7,9 +7,9 @@ const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
   metadataBase: new URL(TOOL_URLS.nota),
-  title: 'AgilizaNota: gerador de recibos e declarações em PDF',
-  description: 'Gere recibos de pagamento e declarações de conteúdo em PDF.',
-  keywords: ['gerar recibo de pagamento', 'recibo em pdf', 'declaração de conteúdo'],
+  title: 'AgilizaNota: recibos, declarações e DANFE de NF-e em PDF',
+  description: 'Gere recibos de pagamento, declarações de conteúdo e DANFE de NF-e em PDF a partir de XML ou chave de acesso.',
+  keywords: ['gerar recibo de pagamento', 'recibo em pdf', 'declaração de conteúdo', 'danfe pdf', 'xml nfe para pdf'],
   authors: [{ name: 'Rede Agiliza', url: PORTAL_URL }],
   alternates: { canonical: '/' },
   openGraph: {
