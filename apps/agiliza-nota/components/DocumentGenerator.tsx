@@ -13,6 +13,7 @@ import {
 } from '../lib/document-formatters'
 import type { DeclarationItem } from '../lib/document-formatters'
 import { downloadDeclaracaoPdf, downloadReciboPdf } from '../lib/pdf-generator'
+import { NfeImporter } from './NfeImporter'
 
 type DocType = 'recibo' | 'declaracao' | 'nfe'
 
@@ -247,25 +248,9 @@ export function DocumentGenerator() {
         })}
       </div>
 
-      {/* NF-e / DANFE Tab (placeholder honesto até #27/#28) */}
+      {/* NF-e / DANFE Tab */}
       {docType === 'nfe' ? (
-        <div
-          role="status"
-          className="rounded-2xl border border-slate-800 bg-slate-900 p-6 sm:p-8"
-        >
-          <div className="flex items-start gap-3">
-            <Icon name="file" className="mt-0.5 h-5 w-5 shrink-0 text-blue-400" />
-            <div className="space-y-2">
-              <h2 className="text-sm font-bold text-white">
-                Importação de XML e geração de DANFE em PDF em desenvolvimento
-              </h2>
-              <p className="text-xs leading-relaxed text-slate-400">
-                Esta aba receberá o envio de arquivo XML de NF-e (um arquivo por vez no modo gratuito)
-                e a validação de chave de acesso de 44 dígitos para gerar o DANFE em PDF.
-              </p>
-            </div>
-          </div>
-        </div>
+        <NfeImporter />
       ) : (
         <div className="grid grid-cols-1 items-start gap-8 lg:grid-cols-12">
           {/* Editor Column */}
