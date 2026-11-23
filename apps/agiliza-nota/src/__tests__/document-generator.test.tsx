@@ -2,6 +2,14 @@ import '@testing-library/jest-dom'
 import { fireEvent, render, screen } from '@testing-library/react'
 import { DocumentGenerator } from '../../components/DocumentGenerator'
 
+const mockDownloadReciboPdf = jest.fn((..._args: unknown[]) => 'recibo-pagamento-0001.pdf')
+const mockDownloadDeclaracaoPdf = jest.fn((..._args: unknown[]) => 'declaracao-conteudo.pdf')
+
+jest.mock('../../lib/pdf-generator', () => ({
+  downloadReciboPdf: (...args: unknown[]) => mockDownloadReciboPdf(...args),
+  downloadDeclaracaoPdf: (...args: unknown[]) => mockDownloadDeclaracaoPdf(...args),
+}))
+
 describe('DocumentGenerator', () => {
   it('renders Recibo tab with accessible labels, applies CPF mask, and updates preview', () => {
     render(<DocumentGenerator />)
@@ -21,10 +29,10 @@ describe('DocumentGenerator', () => {
     expect(screen.getByText('Empresa Teste Sintética')).toBeInTheDocument()
   })
 
-  it('shows inline validation errors when printing an incomplete Recibo', () => {
+  it('shows inline validation errors when exporting an incomplete Recibo', () => {
     render(<DocumentGenerator />)
 
-    fireEvent.click(screen.getByRole('button', { name: /Imprimir \/ Salvar em PDF/i }))
+    fireEvent.click(screen.getByRole('button', { name: /Baixar PDF/i }))
 
     expect(screen.getByText(/Informe o nome de quem recebeu/i)).toBeInTheDocument()
     expect(screen.getByText(/Informe um valor maior que zero/i)).toBeInTheDocument()
@@ -39,6 +47,28 @@ describe('DocumentGenerator', () => {
     expect(declTab).toHaveAttribute('aria-selected', 'true')
     fireEvent.click(screen.getByRole('button', { name: /Adicionar item/i }))
     expect(screen.getByLabelText(/Descrição #2/i)).toBeInTheDocument()
+  })
+
+  it('exports Recibo PDF when required fields are filled', () => {
+    render(<DocumentGenerator />)
+
+    fireEvent.change(screen.getByLabelText(/Nome de quem recebeu/i), {
+      target: { value: 'Maria Souza' },
+    })
+    fireEvent.change(screen.getByLabelText(/Nome de quem pagou/i), {
+      target: { value: 'João Silva' },
+    })
+    fireEvent.change(screen.getByLabelText(/Valor Recebido/i), {
+      target: { value: '350' },
+    })
+    fireEvent.change(screen.getByLabelText(/Referente a/i), {
+      target: { value: 'Serviço de consultoria' },
+    })
+
+    fireEvent.click(screen.getByRole('button', { name: /Baixar PDF/i }))
+
+    expect(mockDownloadReciboPdf).toHaveBeenCalledTimes(1)
+    expect(screen.getByText(/PDF gerado e baixado: recibo-pagamento-0001.pdf/i)).toBeInTheDocument()
   })
 
   it('shows honest status notice on NF-e / DANFE tab', () => {
