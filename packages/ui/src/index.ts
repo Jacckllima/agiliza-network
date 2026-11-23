@@ -1,4 +1,6 @@
 // Components
+export { AdSlot } from './components/AdSlot'
+export type { AdSlotProps } from './components/AdSlot'
 export { Header } from './components/Header'
 export { Footer } from './components/Footer'
 export { Button } from './button'
