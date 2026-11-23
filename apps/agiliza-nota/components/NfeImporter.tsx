@@ -13,11 +13,37 @@ export interface NfeImporterProps {
   renderActions?: (nfe: NfeParsedData) => ReactNode
 }
 
+interface RemoteDanfePdf {
+  base64: string
+  accessKey: string
+  filename: string
+  provider: string
+}
+
+function downloadBase64Pdf(base64: string, filename: string) {
+  const clean = base64.replace(/^data:application\/pdf;base64,/, '')
+  const binary = atob(clean)
+  const bytes = new Uint8Array(binary.length)
+  for (let i = 0; i < binary.length; i += 1) {
+    bytes[i] = binary.charCodeAt(i)
+  }
+  const blob = new Blob([bytes], { type: 'application/pdf' })
+  const url = URL.createObjectURL(blob)
+  const link = document.createElement('a')
+  link.href = url
+  link.download = filename
+  document.body.appendChild(link)
+  link.click()
+  document.body.removeChild(link)
+  setTimeout(() => URL.revokeObjectURL(url), 10000)
+}
+
 export function NfeImporter({ renderActions }: NfeImporterProps) {
   const fileInputRef = useRef<HTMLInputElement>(null)
   const [accessKeyInput, setAccessKeyInput] = useState('')
   const [decodedKey, setDecodedKey] = useState<DecodedNfeAccessKey | null>(null)
   const [parsedNfe, setParsedNfe] = useState<NfeParsedData | null>(null)
+  const [remotePdf, setRemotePdf] = useState<RemoteDanfePdf | null>(null)
   const [errorMessage, setErrorMessage] = useState('')
   const [infoMessage, setInfoMessage] = useState('')
   const [isLookingUp, setIsLookingUp] = useState(false)
@@ -26,6 +52,7 @@ export function NfeImporter({ renderActions }: NfeImporterProps) {
     try {
       const parsed = parseNfeXml(xmlText)
       setParsedNfe(parsed)
+      setRemotePdf(null)
       setAccessKeyInput(parsed.formattedKey)
       const keyCheck = validateAndDecodeAccessKey(parsed.accessKey)
       setDecodedKey(keyCheck.valid ? keyCheck.data : null)
@@ -33,6 +60,7 @@ export function NfeImporter({ renderActions }: NfeImporterProps) {
       setInfoMessage(`XML carregado com sucesso (${sourceLabel}).`)
     } catch (err) {
       setParsedNfe(null)
+      setRemotePdf(null)
       setInfoMessage('')
       setErrorMessage(err instanceof Error ? err.message : 'Erro ao interpretar o arquivo XML.')
     }
@@ -89,6 +117,8 @@ export function NfeImporter({ renderActions }: NfeImporterProps) {
     }
 
     setDecodedKey(result.data)
+    setRemotePdf(null)
+    setParsedNfe(null)
     setIsLookingUp(true)
     try {
       const response = await fetch('/api/nfe/lookup', {
@@ -96,10 +126,27 @@ export function NfeImporter({ renderActions }: NfeImporterProps) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ accessKey: result.data.accessKey }),
       })
-      const payload = (await response.json()) as { xml?: string; message?: string }
+      const payload = (await response.json()) as {
+        xml?: string
+        pdfBase64?: string
+        provider?: string
+        message?: string
+      }
 
       if (response.ok && payload.xml) {
         handleXmlText(payload.xml, `Chave ${result.data.numero}`)
+        return
+      }
+
+      if (response.ok && payload.pdfBase64) {
+        const filename = `danfe-nfe-${result.data.numero || result.data.accessKey.slice(25, 34)}.pdf`
+        setRemotePdf({
+          base64: payload.pdfBase64,
+          accessKey: result.data.accessKey,
+          filename,
+          provider: payload.provider || 'consultadanfe',
+        })
+        setInfoMessage('DANFE localizado pela chave de acesso! Clique abaixo para baixar o PDF.')
         return
       }
 
@@ -120,6 +167,7 @@ export function NfeImporter({ renderActions }: NfeImporterProps) {
     setAccessKeyInput('')
     setDecodedKey(null)
     setParsedNfe(null)
+    setRemotePdf(null)
     setErrorMessage('')
     setInfoMessage('')
     if (fileInputRef.current) {
@@ -180,8 +228,8 @@ export function NfeImporter({ renderActions }: NfeImporterProps) {
           </h2>
 
           <p className="text-xs leading-relaxed text-slate-400">
-            Valide o dígito verificador (módulo 11) e decodifique os dados da chave localmente ou
-            consulte quando a integração fiscal estiver habilitada.
+            Consulte NF-e (modelo 55) do mês atual gratuitamente pela chave via ConsultaDanfe ou
+            valide os metadados localmente. Para notas mais antigas ou NFC-e, envie o arquivo XML.
           </p>
 
           <div>
@@ -278,6 +326,30 @@ export function NfeImporter({ renderActions }: NfeImporterProps) {
               <dd className="font-mono font-semibold text-white">{decodedKey.emitenteCnpj}</dd>
             </div>
           </dl>
+        </div>
+      )}
+
+      {/* DANFE em PDF obtido diretamente pela consulta por chave */}
+      {remotePdf && !parsedNfe && (
+        <div className="flex flex-col justify-between gap-4 rounded-2xl border border-slate-800 bg-slate-900 p-6 shadow-sm sm:flex-row sm:items-center">
+          <div className="space-y-1">
+            <h3 className="text-sm font-bold text-white">DANFE pronto para download</h3>
+            <p className="font-mono text-[11px] text-slate-400">{formatAccessKey(remotePdf.accessKey)}</p>
+            <p className="text-[11px] text-slate-400">
+              Representação gráfica auxiliar (1 nota por vez). Não substitui o arquivo XML fiscal oficial.
+            </p>
+          </div>
+          <button
+            type="button"
+            onClick={() => {
+              downloadBase64Pdf(remotePdf.base64, remotePdf.filename)
+              setInfoMessage(`DANFE baixado: ${remotePdf.filename}`)
+            }}
+            className="inline-flex shrink-0 items-center justify-center gap-2 rounded-lg bg-blue-600 px-4 py-2.5 text-xs font-bold text-white shadow-sm transition-colors hover:bg-blue-500"
+          >
+            <Icon name="download" className="h-4 w-4" />
+            <span>Baixar DANFE em PDF</span>
+          </button>
         </div>
       )}
 

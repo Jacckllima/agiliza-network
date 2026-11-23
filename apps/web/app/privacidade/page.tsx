@@ -127,8 +127,9 @@ export default function PrivacyPolicyPage() {
               <p className="mt-1 text-sm text-slate-600 dark:text-slate-300">
                 Formulários de recibos, declarações de conteúdo e a conversão de arquivos XML de NF-e
                 em DANFE PDF ocorrem exclusivamente na memória do navegador, sem retenção ou cadastro de
-                usuários. Caso a consulta opcional por chave de acesso de 44 dígitos seja habilitada via
-                provedor fiscal externo, apenas a chave informada é enviada pontualmente para a consulta.
+                usuários. Ao utilizar a consulta por chave de acesso de 44 dígitos, apenas a chave
+                informada é enviada sob demanda para a API pública do ConsultaDanfe (
+                <code>consultadanfe.com</code>) para obtenção do DANFE em PDF.
               </p>
             </article>
 
