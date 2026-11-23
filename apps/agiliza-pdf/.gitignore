@@ -9,3 +9,6 @@ out/
 
 # Logs
 *.log
+
+# PDF.js worker copied on predev/prebuild
+public/pdf.worker.min.mjs

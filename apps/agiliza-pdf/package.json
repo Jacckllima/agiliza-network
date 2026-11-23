@@ -4,7 +4,9 @@
   "type": "module",
   "private": true,
   "scripts": {
+    "predev": "node scripts/copy-pdf-worker.mjs",
     "dev": "next dev --port 3001",
+    "prebuild": "node scripts/copy-pdf-worker.mjs",
     "build": "next build",
     "start": "next start --port 3001",
     "lint": "eslint --max-warnings 0",
@@ -15,6 +17,7 @@
     "@agiliza/ui": "*",
     "next": "16.3.2",
     "pdf-lib": "^1.17.1",
+    "pdfjs-dist": "^6.5.438",
     "react": "19.2.8",
     "react-dom": "19.2.8"
   },
