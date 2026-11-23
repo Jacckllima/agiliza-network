@@ -165,7 +165,7 @@ export function DocumentGenerator() {
       <div
         role="tablist"
         aria-label="Tipo de documento"
-        className="grid grid-cols-1 gap-2 rounded-xl border border-slate-800 bg-slate-950 p-1.5 sm:grid-cols-3"
+        className="grid grid-cols-1 gap-2 rounded-xl border border-slate-800 bg-slate-950 p-1.5 sm:grid-cols-3 print:hidden"
       >
         {(
           [
@@ -622,11 +622,12 @@ export function DocumentGenerator() {
                     Para clareza e fins de direito, firmo(amos) o presente recibo.
                   </p>
 
-                  <div className="space-y-2 pt-12 text-center">
-                    <p className="text-xs text-slate-600">
-                      {cidade || 'Cidade / UF'}, {dataDoc || getTodayBR()}
-                    </p>
-                    <div className="mx-auto w-64 border-t border-slate-900 pt-1">
+                  <p className="pt-4 text-right text-xs text-slate-600">
+                    {cidade || 'Cidade / UF'}, {dataDoc || getTodayBR()}
+                  </p>
+
+                  <div className="pt-16 text-center">
+                    <div className="mx-auto w-72 border-t border-slate-900 pt-2">
                       <p className="text-xs font-bold text-slate-900">
                         {emissorNome || 'Assinatura do Emissor'}
                       </p>
