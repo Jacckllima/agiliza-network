@@ -84,10 +84,12 @@ export default function TermsOfUsePage() {
               órgãos públicos, empregadores ou instituições financeiras.
             </p>
             <p>
-              <strong>Agiliza Nota ({getToolHost('nota')}):</strong> Os recibos e declarações de
-              conteúdo gerados em PDF servem apenas como apoio de formatação a partir dos dados
-              preenchidos pelo próprio usuário. A veracidade das informações, a adequação fiscal e a
-              validade legal do documento são de responsabilidade exclusiva de quem o emite.
+              <strong>Agiliza Nota ({getToolHost('nota')}):</strong> Os recibos, declarações de
+              conteúdo e DANFEs gerados em PDF a partir de XML servem apenas como apoio gráfico e de
+              conferência a partir dos dados fornecidos pelo próprio usuário. O DANFE gerado não
+              substitui o arquivo XML fiscal oficial nem realiza emissão ou transmissão perante a SEFAZ.
+              A veracidade das informações, a adequação fiscal e a validade legal dos documentos são de
+              responsabilidade exclusiva de quem os emite.
             </p>
             <p>
               <strong>Agiliza Dev ({getToolHost('dev')}):</strong> Geradores de CPF e CNPJ destinam-se

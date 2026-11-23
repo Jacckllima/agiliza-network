@@ -125,8 +125,11 @@ export default function PrivacyPolicyPage() {
                 Agiliza Nota ({getToolHost('nota')})
               </h3>
               <p className="mt-1 text-sm text-slate-600 dark:text-slate-300">
-                Formulários para emissão de recibos e declarações permanecem na memória da sessão até a
-                impressão ou exportação em PDF. Não há retenção ou cadastro de usuários.
+                Formulários de recibos, declarações de conteúdo e a conversão de arquivos XML de NF-e
+                em DANFE PDF ocorrem exclusivamente na memória do navegador, sem retenção ou cadastro de
+                usuários. Ao utilizar a consulta por chave de acesso de 44 dígitos, apenas a chave
+                informada é enviada sob demanda para a API pública do ConsultaDanfe (
+                <code>consultadanfe.com</code>) para obtenção do DANFE em PDF.
               </p>
             </article>
 

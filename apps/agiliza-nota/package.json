@@ -9,7 +9,7 @@
     "start": "next start --port 3006",
     "lint": "eslint --max-warnings 0",
     "check-types": "next typegen && tsc --noEmit",
-    "test": "node --test lib/pdf-generator.test.ts lib/nfe-parser.test.ts && jest --ci --testPathIgnorePatterns=lib/"
+    "test": "node --test lib/pdf-generator.test.ts lib/nfe-parser.test.ts lib/danfe-pdf.test.ts && jest --ci --testPathIgnorePatterns=lib/"
   },
   "dependencies": {
     "@agiliza/ui": "*",

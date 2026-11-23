@@ -4,10 +4,15 @@ import { DocumentGenerator } from '../../components/DocumentGenerator'
 
 const mockDownloadReciboPdf = jest.fn((..._args: unknown[]) => 'recibo-pagamento-0001.pdf')
 const mockDownloadDeclaracaoPdf = jest.fn((..._args: unknown[]) => 'declaracao-conteudo.pdf')
+const mockDownloadDanfePdf = jest.fn((..._args: unknown[]) => 'danfe-nfe-123.pdf')
 
 jest.mock('../../lib/pdf-generator', () => ({
   downloadReciboPdf: (...args: unknown[]) => mockDownloadReciboPdf(...args),
   downloadDeclaracaoPdf: (...args: unknown[]) => mockDownloadDeclaracaoPdf(...args),
+}))
+
+jest.mock('../../lib/danfe-pdf', () => ({
+  downloadDanfePdf: (...args: unknown[]) => mockDownloadDanfePdf(...args),
 }))
 
 describe('DocumentGenerator', () => {

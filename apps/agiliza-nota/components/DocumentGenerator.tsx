@@ -13,6 +13,8 @@ import {
 } from '../lib/document-formatters'
 import type { DeclarationItem } from '../lib/document-formatters'
 import { downloadDeclaracaoPdf, downloadReciboPdf } from '../lib/pdf-generator'
+import { downloadDanfePdf } from '../lib/danfe-pdf'
+import type { NfeParsedData } from '../lib/nfe-xml-parser'
 import { NfeImporter } from './NfeImporter'
 
 type DocType = 'recibo' | 'declaracao' | 'nfe'
@@ -212,6 +214,18 @@ export function DocumentGenerator() {
   const inputClass =
     'w-full rounded-lg border border-slate-700 bg-slate-950 px-3 py-2.5 text-xs text-white placeholder:text-slate-500 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/30'
 
+  const handleDownloadDanfe = (nfe: NfeParsedData) => {
+    setIsExporting(true)
+    try {
+      const filename = downloadDanfePdf(nfe, getPortalHost())
+      setStatusMessage(`DANFE gerado e baixado: ${filename}`)
+    } catch {
+      setStatusMessage('Não foi possível gerar o PDF do DANFE. Verifique o XML e tente novamente.')
+    } finally {
+      setIsExporting(false)
+    }
+  }
+
   return (
     <div className="w-full space-y-6">
       {/* Tab Bar */}
@@ -250,7 +264,35 @@ export function DocumentGenerator() {
 
       {/* NF-e / DANFE Tab */}
       {docType === 'nfe' ? (
-        <NfeImporter />
+        <div className="space-y-3">
+          <NfeImporter
+            renderActions={(nfe) => (
+              <div className="flex flex-col items-end gap-1.5">
+                <button
+                  type="button"
+                  onClick={() => handleDownloadDanfe(nfe)}
+                  disabled={isExporting}
+                  className="inline-flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2.5 text-xs font-bold text-white shadow-sm transition-colors hover:bg-blue-500 disabled:opacity-60"
+                >
+                  <Icon name="download" className="h-4 w-4" />
+                  <span>{isExporting ? 'Gerando DANFE...' : 'Baixar DANFE em PDF'}</span>
+                </button>
+                <span className="text-[10px] text-slate-400">
+                  Representação gráfica auxiliar (1 nota por vez). Não substitui o XML fiscal oficial.
+                </span>
+              </div>
+            )}
+          />
+          {statusMessage && (
+            <div
+              role="status"
+              aria-live="polite"
+              className="rounded-xl border border-blue-500/30 bg-blue-950/30 px-4 py-3 text-xs text-blue-300"
+            >
+              {statusMessage}
+            </div>
+          )}
+        </div>
       ) : (
         <div className="grid grid-cols-1 items-start gap-8 lg:grid-cols-12">
           {/* Editor Column */}
