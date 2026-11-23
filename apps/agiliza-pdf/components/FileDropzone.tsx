@@ -21,6 +21,7 @@ export interface FileDropzoneProps {
   maxTotalSizeBytes?: number
   files: File[]
   onFilesChange: (nextFiles: File[]) => void
+  hideFileList?: boolean
 }
 
 export function FileDropzone({
@@ -35,6 +36,7 @@ export function FileDropzone({
   maxTotalSizeBytes = MAX_TOTAL_BATCH_BYTES,
   files,
   onFilesChange,
+  hideFileList = false,
 }: FileDropzoneProps) {
   const [isDragging, setIsDragging] = useState(false)
   const [errors, setErrors] = useState<string[]>([])
@@ -155,7 +157,7 @@ export function FileDropzone({
         )}
       </div>
 
-      {files.length > 0 && (
+      {!hideFileList && files.length > 0 && (
         <ul className="space-y-2" aria-label="Arquivos selecionados">
           {files.map((file, index) => (
             <li
