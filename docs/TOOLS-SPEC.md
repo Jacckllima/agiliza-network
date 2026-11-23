@@ -7,33 +7,37 @@
 ## AgilizaPDF (`apps/agiliza-pdf`)
 
 **URL:** `agiliza-pdf.vercel.app`  
-**Keyword Alvo Principal:** "comprimir PDF grátis online"  
-**Processamento:** 100% Client-Side
+**Keyword Alvo Principal:** "juntar, dividir, converter e comprimir PDF grátis online"  
+**Processamento:** 100% Client-Side na Fase 1 (sem envio de arquivos para servidor)  
+**Especificação Detalhada:** [docs/AGILIZA-PDF-SPEC.md](./AGILIZA-PDF-SPEC.md) (Issue #38)
 
-### Funcionalidades MVP
-- [ ] **Comprimir PDF** — redução de qualidade de imagens embutidas via pdf-lib
-- [ ] **Mesclar PDFs** — unir múltiplos arquivos em um
-- [ ] **Dividir PDF** — por intervalo de páginas ou cada página
-- [ ] **PDF para Imagem** — exportar páginas como PNG/JPG
+### Funcionalidades Planejadas (Fase 1 - Client-Side)
+- [ ] **Base UI, Tailwind v4, tema claro, Como usar/FAQ e `<AdSlot />`** (#39)
+- [ ] **Organizar PDF:** juntar PDFs, dividir/extrair intervalos, girar e remover páginas (#40)
+- [ ] **Converter de PDF:** PDF para JPG/PNG e extração de texto (#41)
+- [ ] **Converter em PDF:** JPG/PNG/WebP e TXT/MD para PDF (#42)
+- [ ] **Assinar PDF:** assinatura visual (desenho, texto ou imagem) no cliente (#43)
+- [ ] **Edição avançada:** números de página, marca d'água, recortar, achatar, formulários, anotações, tarjar e comparar PDFs (#45)
+- [ ] **Segurança, extras, Scanner e OCR:** proteger/desbloquear com senha, HTML/CSV para PDF, PDF para Markdown, scanner por câmera e OCR client-side (#46)
+- [ ] **Otimizar / Comprimir PDF**, atualização do portal/políticas e validação completa no CI (#44)
 
-### Funcionalidades Futuras
-- [ ] PDF para Word (via Mammoth.js ou WASM)
-- [ ] Proteger/desproteger com senha
-- [ ] Rodar páginas (90°, 180°, 270°)
-- [ ] Remover páginas específicas
+### Funcionalidades Futuras (Fase 2 - Backend / IA)
+- [ ] **Conversões Office, PDF/A e Reparar PDF** via worker Docker (LibreOffice/Ghostscript) — Spike #47
+- [ ] **IA para PDF** (resumir, chat, traduzir e gerar questões) com controle de custo — Spike #48
 
-### Dependências
+### Dependências Previstas (Fase 1)
 ```json
 {
   "pdf-lib": "^1.17.1",
-  "pdfjs-dist": "^4.0.0"
+  "pdfjs-dist": "^4.x",
+  "tesseract.js": "^5.x (lazy-loaded em #46)"
 }
 ```
 
-### Limites
-- Tamanho máximo: 100MB por arquivo
-- Máximo de arquivos para merge: 20 PDFs
-- Compressão: reduz em média 40-70% (depende do conteúdo)
+### Limites Gratuitos (Client-Side)
+- Tamanho máximo por arquivo: 25 MB (até 50 MB somados em Juntar PDFs)
+- Máximo de arquivos para juntar: 15 PDFs por operação
+- Processamento e download de 1 operação por vez (lote e remoção de anúncios reservados apenas como visão futura de plano pago)
 
 ---
 
