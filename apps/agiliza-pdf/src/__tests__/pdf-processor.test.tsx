@@ -72,6 +72,13 @@ jest.mock('../../lib/convert-to-pdf', () => ({
   })),
 }))
 
+jest.mock('../../lib/pdf-sign', () => ({
+  applyVisualSignatureToPdf: jest.fn(async () => ({
+    bytes: new Uint8Array([37, 80, 68, 70, 45, 49]),
+    pageCount: 3,
+  })),
+}))
+
 describe('PDFProcessor', () => {
   it('renders accessible tablist and switches between workspaces', () => {
     render(<PDFProcessor />)
@@ -245,5 +252,54 @@ describe('PDFProcessor', () => {
     await waitFor(() => {
       expect(screen.getByText(/PDF de texto gerado/i)).toBeInTheDocument()
     })
+  })
+
+  it('loads PDF, switches signature modes, positions by keyboard sliders and signs PDF', async () => {
+    const originalCreateObjectUrl = URL.createObjectURL
+    URL.createObjectURL = jest.fn(() => 'blob:mock-signature')
+
+    try {
+      render(<PDFProcessor />)
+
+      fireEvent.click(screen.getByRole('tab', { name: /Assinar PDF/i }))
+      expect(screen.getByRole('note')).toHaveTextContent(/ICP-Brasil/i)
+
+      const pdfInput = screen.getByLabelText(/Envie 1 arquivo PDF para assinar/i)
+      const pdfFile = new File(['%PDF-1.4 sign'], 'contrato.pdf', {
+        type: 'application/pdf',
+      })
+      fireEvent.change(pdfInput, { target: { files: [pdfFile] } })
+
+      await waitFor(() => {
+        expect(screen.getByLabelText(/Página:/i)).toBeInTheDocument()
+      })
+
+      fireEvent.click(screen.getByRole('button', { name: /Enviar PNG/i }))
+      const pngInput = screen.getByLabelText(/Selecionar imagem PNG da assinatura/i)
+      const pngFile = new File(['png-bytes'], 'assinatura.png', {
+        type: 'image/png',
+      })
+      fireEvent.change(pngInput, { target: { files: [pngFile] } })
+
+      await waitFor(() => {
+        expect(screen.getByText('assinatura.png')).toBeInTheDocument()
+      })
+
+      fireEvent.change(screen.getByLabelText(/Posição horizontal/i), {
+        target: { value: '60' },
+      })
+
+      fireEvent.click(
+        screen.getByRole('button', { name: /Aplicar assinatura e baixar PDF/i }),
+      )
+
+      await waitFor(() => {
+        expect(
+          screen.getByText(/Assinatura visual aplicada na página 1/i),
+        ).toBeInTheDocument()
+      })
+    } finally {
+      URL.createObjectURL = originalCreateObjectUrl
+    }
   })
 })
