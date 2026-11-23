@@ -1,26 +1,24 @@
 import '@testing-library/jest-dom'
-import { render, screen } from '@testing-library/react'
+import { fireEvent, render, screen } from '@testing-library/react'
 import { QRGenerator } from '../../components/QRGenerator'
 
 describe('QRGenerator', () => {
-  it('renders the QR generator', () => {
+  it('renders QR generator tablist with Pix and Link tabs', () => {
     render(<QRGenerator />)
-    expect(screen.getByText('QR')).toBeInTheDocument()
+
+    expect(screen.getByRole('tablist')).toBeInTheDocument()
+    expect(screen.getByRole('tab', { name: /Pix/i })).toBeInTheDocument()
+    expect(screen.getByRole('tab', { name: /Link/i })).toBeInTheDocument()
   })
 
-  it('has all tab buttons', () => {
+  it('switches between Pix and Link tabs and accepts synthetic input', () => {
     render(<QRGenerator />)
-    expect(screen.getByText('Pix')).toBeInTheDocument()
-    expect(screen.getByText('Link')).toBeInTheDocument()
-  })
 
-  it('renders Input component', () => {
-    render(<QRGenerator />)
-    expect(screen.getByRole('textbox')).toBeInTheDocument()
-  })
+    const linkTab = screen.getByRole('tab', { name: /Link/i })
+    fireEvent.click(linkTab)
 
-  it('renders generate button', () => {
-    render(<QRGenerator />)
-    expect(screen.getByRole('button', { name: /gerar/i })).toBeInTheDocument()
+    expect(linkTab).toHaveAttribute('aria-selected', 'true')
+    const inputs = screen.getAllByRole('textbox')
+    expect(inputs.length).toBeGreaterThan(0)
   })
 })

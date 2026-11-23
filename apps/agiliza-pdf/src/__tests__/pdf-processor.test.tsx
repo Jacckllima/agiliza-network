@@ -3,19 +3,11 @@ import { render, screen } from '@testing-library/react'
 import { PDFProcessor } from '../../components/PDFProcessor'
 
 describe('PDFProcessor', () => {
-  it('renders the processor', () => {
+  it('renders unavailability status notice without exposing broken PDF controls', () => {
     render(<PDFProcessor />)
-    expect(screen.getByText('PDF')).toBeInTheDocument()
-  })
 
-  it('has mode buttons', () => {
-    render(<PDFProcessor />)
-    expect(screen.getByText('Mesclar')).toBeInTheDocument()
-    expect(screen.getByText('Dividir')).toBeInTheDocument()
-  })
-
-  it('renders with initial mode merge', () => {
-    render(<PDFProcessor />)
-    expect(screen.getByText('Mesclar')).toBeInTheDocument()
+    const status = screen.getByRole('status')
+    expect(status).toHaveTextContent(/Operações com PDF indisponíveis/i)
+    expect(status).toHaveTextContent(/Nenhum arquivo é processado nesta tela/i)
   })
 })

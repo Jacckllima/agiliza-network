@@ -11,16 +11,18 @@ describe('Button', () => {
   it('renders all variants', () => {
     const variants = ['primary', 'secondary', 'accent', 'ghost', 'danger', 'outline'] as const
     variants.forEach((variant) => {
-      render(<Button variant={variant}>{variant}</Button>)
+      const { unmount } = render(<Button variant={variant}>{variant}</Button>)
       expect(screen.getByRole('button')).toBeInTheDocument()
+      unmount()
     })
   })
 
   it('renders all sizes', () => {
     const sizes = ['sm', 'md', 'lg'] as const
     sizes.forEach((size) => {
-      render(<Button size={size}>{size}</Button>)
+      const { unmount } = render(<Button size={size}>{size}</Button>)
       expect(screen.getByRole('button')).toBeInTheDocument()
+      unmount()
     })
   })
 

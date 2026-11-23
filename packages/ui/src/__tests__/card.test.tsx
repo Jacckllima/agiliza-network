@@ -11,16 +11,18 @@ describe('Card', () => {
   it('renders all variants', () => {
     const variants = ['default', 'elevated', 'glass', 'bordered', 'gradient'] as const
     variants.forEach((variant) => {
-      render(<Card variant={variant}>Card</Card>)
+      const { unmount } = render(<Card variant={variant}>Card</Card>)
       expect(screen.getByText('Card')).toBeInTheDocument()
+      unmount()
     })
   })
 
   it('renders all padding options', () => {
     const paddings = ['none', 'sm', 'md', 'lg'] as const
     paddings.forEach((padding) => {
-      render(<Card padding={padding}>Padded</Card>)
+      const { unmount } = render(<Card padding={padding}>Padded</Card>)
       expect(screen.getByText('Padded')).toBeInTheDocument()
+      unmount()
     })
   })
 })

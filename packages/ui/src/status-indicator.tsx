@@ -32,7 +32,7 @@ export function StatusIndicator({
   ...rest
 }: StatusIndicatorProps) {
   return (
-    <div className={`inline-flex items-center gap-2 ${className}`} {...rest}>
+    <div role="status" className={`inline-flex items-center gap-2 ${className}`} {...rest}>
       <span
         className={`${statusColors[status]} ${sizes[size]} rounded-full shrink-0`}
         aria-hidden="true"
