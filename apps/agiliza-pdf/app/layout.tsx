@@ -7,16 +7,26 @@ const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
   metadataBase: new URL(TOOL_URLS.pdf),
-  title: 'AgilizaPDF: ferramentas para arquivos PDF',
-  description: 'As operações com arquivos PDF estão indisponíveis nesta versão do AgilizaPDF.',
-  keywords: ['ferramentas para pdf', 'agiliza pdf'],
+  title: 'AgilizaPDF: ferramentas para arquivos PDF no navegador',
+  description:
+    'Organize, converta, assine, edite e otimize arquivos PDF diretamente no navegador, sem envio para servidores.',
+  keywords: [
+    'ferramentas para pdf',
+    'juntar pdf',
+    'dividir pdf',
+    'converter pdf',
+    'assinar pdf',
+    'comprimir pdf',
+    'agiliza pdf',
+  ],
   authors: [{ name: 'Rede Agiliza', url: PORTAL_URL }],
   alternates: { canonical: '/' },
   openGraph: {
     type: 'website',
     siteName: 'Agiliza Network',
-    title: 'AgilizaPDF: ferramentas para arquivos PDF',
-    description: 'As operações com arquivos PDF estão indisponíveis nesta versão.',
+    title: 'AgilizaPDF: ferramentas para arquivos PDF no navegador',
+    description:
+      'Ferramentas locais para manipular, converter, assinar e otimizar arquivos PDF no navegador.',
   },
   robots: { index: true, follow: true },
 }
@@ -27,8 +37,8 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="pt-BR" className="dark">
-      <body className={`${inter.className} min-h-screen flex flex-col bg-slate-950 text-slate-100`}>
+    <html lang="pt-BR" className="light" data-theme="light">
+      <body className={`${inter.className} min-h-screen flex flex-col`}>
         <Header currentTool="pdf" />
         <main className="flex-1">{children}</main>
         <Footer currentTool="pdf" />

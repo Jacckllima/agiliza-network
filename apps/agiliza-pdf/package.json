@@ -9,7 +9,7 @@
     "start": "next start --port 3001",
     "lint": "eslint --max-warnings 0",
     "check-types": "next typegen && tsc --noEmit",
-    "test": "jest --ci"
+    "test": "node --test lib/*.test.ts && jest --ci --testPathIgnorePatterns=lib/"
   },
   "dependencies": {
     "@agiliza/ui": "*",
