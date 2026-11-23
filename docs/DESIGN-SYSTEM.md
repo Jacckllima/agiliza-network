@@ -123,7 +123,7 @@ type ToolId =
 ```
 
 **Comportamento:**
-- Logo Agiliza com ícone SVG, linkado para `agilizatools.com.br`
+- Logo Agiliza com ícone SVG, linkado para `PORTAL_URL` (`https://agiliza-network.vercel.app`)
 - Dropdown "Ferramentas" com todas as 10 apps (hover ou click)
 - A ferramenta atual fica destacada no dropdown com a cor brand
 - Mobile: hamburger menu que expande lista vertical

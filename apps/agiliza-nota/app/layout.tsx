@@ -1,15 +1,17 @@
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
-import { Header, Footer } from '@agiliza/ui'
+import { Header, Footer, PORTAL_URL, TOOL_URLS } from '@agiliza/ui'
 import './globals.css'
 
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
+  metadataBase: new URL(TOOL_URLS.nota),
   title: 'AgilizaNota: gerador de recibos e declarações em PDF',
   description: 'Gere recibos de pagamento e declarações de conteúdo em PDF.',
   keywords: ['gerar recibo de pagamento', 'recibo em pdf', 'declaração de conteúdo'],
-  authors: [{ name: 'Rede Agiliza', url: 'https://agilizatools.com.br' }],
+  authors: [{ name: 'Rede Agiliza', url: PORTAL_URL }],
+  alternates: { canonical: '/' },
   openGraph: {
     type: 'website',
     siteName: 'Agiliza Network',

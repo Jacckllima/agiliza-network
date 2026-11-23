@@ -1,15 +1,17 @@
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
-import { Header, Footer } from '@agiliza/ui'
+import { Header, Footer, PORTAL_URL, TOOL_URLS } from '@agiliza/ui'
 import './globals.css'
 
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
+  metadataBase: new URL(TOOL_URLS.pdf),
   title: 'AgilizaPDF: ferramentas para arquivos PDF',
   description: 'As operações com arquivos PDF estão indisponíveis nesta versão do AgilizaPDF.',
   keywords: ['ferramentas para pdf', 'agiliza pdf'],
-  authors: [{ name: 'Rede Agiliza', url: 'https://agilizatools.com.br' }],
+  authors: [{ name: 'Rede Agiliza', url: PORTAL_URL }],
+  alternates: { canonical: '/' },
   openGraph: {
     type: 'website',
     siteName: 'Agiliza Network',

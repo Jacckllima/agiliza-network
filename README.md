@@ -219,4 +219,4 @@ apps/agiliza-{tool}/
 
 ## 📄 Licença
 
-MIT © Rede Agiliza — [agilizatools.com.br](https://agilizatools.com.br)
+MIT © Rede Agiliza — [agiliza-network.vercel.app](https://agiliza-network.vercel.app)

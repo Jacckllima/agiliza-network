@@ -1,15 +1,17 @@
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
-import { Header, Footer } from '@agiliza/ui'
+import { Header, Footer, PORTAL_URL, TOOL_URLS } from '@agiliza/ui'
 import './globals.css'
 
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
+  metadataBase: new URL(TOOL_URLS.qr),
   title: 'AgilizaQR: gerador de QR Codes para Pix, Wi-Fi e links',
   description: 'Gere QR Codes para Pix, Wi-Fi, links, texto e contatos. Baixe a imagem em PNG ou SVG.',
   keywords: ['gerar qr code pix', 'qr code wifi', 'criar qr code'],
-  authors: [{ name: 'Rede Agiliza', url: 'https://agilizatools.com.br' }],
+  authors: [{ name: 'Rede Agiliza', url: PORTAL_URL }],
+  alternates: { canonical: '/' },
   openGraph: {
     type: 'website',
     siteName: 'Agiliza Network',

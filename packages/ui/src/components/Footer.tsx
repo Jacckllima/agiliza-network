@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react'
 import { Icon } from '../icon'
+import { PORTAL_URL } from '../config/urls'
 import { TOOLS } from '../types/tools'
 import type { ToolId, ToolMeta } from '../types/tools'
 
@@ -81,7 +82,7 @@ export function Footer({ currentTool }: FooterProps) {
               <span id="footer-about-title">Sobre</span>
             </FooterSectionTitle>
             <a
-              href="https://agilizatools.com.br"
+              href={PORTAL_URL}
               className="mt-4 inline-flex items-center gap-2 text-sm font-bold text-slate-900 transition-colors hover:text-blue-700 dark:text-white dark:hover:text-blue-300"
               aria-label="Agiliza Tools, página inicial"
             >
@@ -110,19 +111,19 @@ export function Footer({ currentTool }: FooterProps) {
             <FooterSectionTitle>Institucional</FooterSectionTitle>
             <ul className="mt-3 space-y-1" role="list">
               <li>
-                <a href="https://agilizatools.com.br/privacidade" className="flex items-center gap-2 py-1 text-sm text-slate-600 transition-colors hover:text-blue-700 dark:text-slate-400 dark:hover:text-blue-300">
+                <a href={`${PORTAL_URL}/privacidade`} className="flex items-center gap-2 py-1 text-sm text-slate-600 transition-colors hover:text-blue-700 dark:text-slate-400 dark:hover:text-blue-300">
                   <Icon name="shield" className="h-4 w-4 text-slate-400 dark:text-slate-500" />
                   Privacidade
                 </a>
               </li>
               <li>
-                <a href="https://agilizatools.com.br/termos" className="flex items-center gap-2 py-1 text-sm text-slate-600 transition-colors hover:text-blue-700 dark:text-slate-400 dark:hover:text-blue-300">
+                <a href={`${PORTAL_URL}/termos`} className="flex items-center gap-2 py-1 text-sm text-slate-600 transition-colors hover:text-blue-700 dark:text-slate-400 dark:hover:text-blue-300">
                   <Icon name="file" className="h-4 w-4 text-slate-400 dark:text-slate-500" />
                   Termos de uso
                 </a>
               </li>
               <li>
-                <a href="https://agilizatools.com.br/contato" className="flex items-center gap-2 py-1 text-sm text-slate-600 transition-colors hover:text-blue-700 dark:text-slate-400 dark:hover:text-blue-300">
+                <a href={`${PORTAL_URL}/contato`} className="flex items-center gap-2 py-1 text-sm text-slate-600 transition-colors hover:text-blue-700 dark:text-slate-400 dark:hover:text-blue-300">
                   <Icon name="message" className="h-4 w-4 text-slate-400 dark:text-slate-500" />
                   Contato
                 </a>
