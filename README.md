@@ -209,6 +209,18 @@ apps/agiliza-{tool}/
 
 ---
 
+## Verificações automáticas (CI)
+
+O workflow [.github/workflows/ci.yml](.github/workflows/ci.yml) executa automaticamente em pull requests e pushes na branch `main` (sem exigir segredos externos):
+
+- `npm run check-types` — validação de tipos TypeScript em todos os apps e pacotes
+- `npm run test` — testes unitários e de fluxo essencial nas 11 aplicações e em `@agiliza/ui`
+- `npm run build:all` — build de produção de todas as aplicações do monorepo
+
+Qualquer falha em um app ou suíte de testes bloqueia o status da verificação.
+
+---
+
 ## 🤝 Contribuindo
 
 1. Crie uma branch a partir de `main`: `git checkout -b feat/agiliza-{tool}-{feature}`

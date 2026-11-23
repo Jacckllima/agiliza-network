@@ -11,8 +11,9 @@ describe('StatusIndicator', () => {
   it('renders all status types', () => {
     const statuses = ['online', 'offline', 'loading', 'error'] as const
     statuses.forEach((status) => {
-      render(<StatusIndicator status={status} />)
+      const { unmount } = render(<StatusIndicator status={status} />)
       expect(screen.getByRole('status')).toBeInTheDocument()
+      unmount()
     })
   })
 })
