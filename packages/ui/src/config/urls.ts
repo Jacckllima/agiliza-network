@@ -7,6 +7,9 @@ function normalizeOrigin(url: string): string {
 }
 
 export const DEFAULT_PORTAL_URL = 'https://agiliza-network.vercel.app'
+export const DEFAULT_CONTACT_EMAIL = 'agilizatools.oficial@gmail.com'
+export const GITHUB_REPO_URL = 'https://github.com/agilizatoolsoficial/agiliza-network'
+export const GITHUB_ISSUES_URL = `${GITHUB_REPO_URL}/issues`
 
 export const DEFAULT_TOOL_URLS: Record<ToolId, string> = {
   pdf: 'https://agiliza-pdf.vercel.app',
@@ -25,6 +28,10 @@ export const PORTAL_URL = normalizeOrigin(
   (typeof process !== 'undefined' ? process.env?.NEXT_PUBLIC_PORTAL_URL : undefined) ||
     DEFAULT_PORTAL_URL,
 )
+
+export const CONTACT_EMAIL =
+  (typeof process !== 'undefined' ? process.env?.NEXT_PUBLIC_CONTACT_EMAIL : undefined) ||
+  DEFAULT_CONTACT_EMAIL
 
 export const TOOL_URLS: Record<ToolId, string> = {
   pdf: normalizeOrigin(

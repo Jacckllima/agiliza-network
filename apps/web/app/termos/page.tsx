@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import { Container, Card, Icon, getToolHost } from '@agiliza/ui'
+import { Container, Card, Icon, CONTACT_EMAIL, getToolHost } from '@agiliza/ui'
 
 export const metadata: Metadata = {
   title: 'Termos e Condições de Uso | Agiliza Tools',
@@ -161,7 +161,14 @@ export default function TermsOfUsePage() {
             </p>
             <p>
               Dúvidas sobre o funcionamento das ferramentas, relatos de erro ou solicitações
-              relacionadas a estes termos podem ser enviados pelo repositório oficial no GitHub (
+              relacionadas a estes termos podem ser enviados para{' '}
+              <a
+                href={`mailto:${CONTACT_EMAIL}`}
+                className="font-medium text-blue-600 underline hover:text-blue-700 dark:text-blue-400"
+              >
+                {CONTACT_EMAIL}
+              </a>
+              , pelo repositório oficial no GitHub (
               <a
                 href="https://github.com/agilizatoolsoficial/agiliza-network"
                 target="_blank"
@@ -170,7 +177,14 @@ export default function TermsOfUsePage() {
               >
                 github.com/agilizatoolsoficial/agiliza-network
               </a>
-              ).
+              ) ou pela página de{' '}
+              <Link
+                href="/contato"
+                className="font-medium text-blue-600 underline hover:text-blue-700 dark:text-blue-400"
+              >
+                Contato
+              </Link>
+              .
             </p>
           </div>
         </Card>
