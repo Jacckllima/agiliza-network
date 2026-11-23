@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { Card, Icon, type IconName } from '@agiliza/ui'
 import { FileDropzone } from './FileDropzone'
+import { OrganizePdfPanel } from './OrganizePdfPanel'
 import { MAX_MERGE_FILES } from '../lib/file-validation'
 
 export type PdfWorkspaceTab =
@@ -36,7 +37,7 @@ const WORKSPACE_TABS = [
     icon: 'scissors',
     title: 'Organizar PDF (juntar, dividir, girar e remover páginas)',
     description:
-      'Selecione arquivos PDF para validar a fila local. O motor de junção, divisão, rotação e remoção de páginas será ativado na próxima etapa.',
+      'Junte múltiplos PDFs na ordem desejada, extraia intervalos de páginas, gire ou remova páginas diretamente no navegador.',
     dropzoneLabel: 'Arraste arquivos PDF aqui ou clique para selecionar',
     dropzoneHelper: 'Formato .pdf, até 25 MB por arquivo e até 15 arquivos (50 MB no total).',
     allowedExtensions: ['.pdf'],
@@ -222,25 +223,31 @@ export function PDFProcessor() {
           <p className="text-sm text-slate-400">{currentTab.description}</p>
         </div>
 
-        <FileDropzone
-          id={`dropzone-${currentTab.id}`}
-          label={currentTab.dropzoneLabel}
-          helperText={currentTab.dropzoneHelper}
-          allowedExtensions={currentTab.allowedExtensions}
-          accept={currentTab.accept}
-          multiple={currentTab.multiple}
-          maxFiles={currentTab.maxFiles}
-          files={currentFiles}
-          onFilesChange={handleFilesChange}
-        />
+        {currentTab.id === 'organizar' ? (
+          <OrganizePdfPanel />
+        ) : (
+          <>
+            <FileDropzone
+              id={`dropzone-${currentTab.id}`}
+              label={currentTab.dropzoneLabel}
+              helperText={currentTab.dropzoneHelper}
+              allowedExtensions={currentTab.allowedExtensions}
+              accept={currentTab.accept}
+              multiple={currentTab.multiple}
+              maxFiles={currentTab.maxFiles}
+              files={currentFiles}
+              onFilesChange={handleFilesChange}
+            />
 
-        <div
-          role="status"
-          className="flex items-start gap-3 rounded-lg border border-amber-500/30 bg-amber-500/10 px-4 py-3 text-xs text-amber-800 dark:text-amber-200"
-        >
-          <Icon name="warning" className="mt-0.5 h-4 w-4 shrink-0 text-amber-500" />
-          <p className="leading-relaxed">{currentTab.roadmapNote}</p>
-        </div>
+            <div
+              role="status"
+              className="flex items-start gap-3 rounded-lg border border-amber-500/30 bg-amber-500/10 px-4 py-3 text-xs text-amber-800 dark:text-amber-200"
+            >
+              <Icon name="warning" className="mt-0.5 h-4 w-4 shrink-0 text-amber-500" />
+              <p className="leading-relaxed">{currentTab.roadmapNote}</p>
+            </div>
+          </>
+        )}
       </Card>
     </div>
   )

@@ -1,6 +1,31 @@
 import '@testing-library/jest-dom'
-import { fireEvent, render, screen } from '@testing-library/react'
+import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { PDFProcessor } from '../../components/PDFProcessor'
+
+jest.mock('../../lib/pdf-operations', () => ({
+  inspectPdfBytes: jest.fn(async () => ({ pageCount: 3 })),
+  mergePdfDocuments: jest.fn(async () => ({
+    bytes: new Uint8Array([37, 80, 68, 70, 45]),
+    pageCount: 6,
+  })),
+  extractPdfPages: jest.fn(async () => ({
+    bytes: new Uint8Array([37, 80, 68, 70, 45]),
+    pageCount: 2,
+  })),
+  rotatePdfPages: jest.fn(async () => ({
+    bytes: new Uint8Array([37, 80, 68, 70, 45]),
+    pageCount: 3,
+  })),
+  removePdfPages: jest.fn(async () => ({
+    bytes: new Uint8Array([37, 80, 68, 70, 45]),
+    pageCount: 2,
+  })),
+  parsePageRange: jest.fn(() => [1, 2]),
+}))
+
+jest.mock('../../lib/browser-download', () => ({
+  downloadBytesAsFile: jest.fn(),
+}))
 
 describe('PDFProcessor', () => {
   it('renders accessible tablist and switches between workspaces', () => {
@@ -26,7 +51,7 @@ describe('PDFProcessor', () => {
   it('validates uploaded file extension and displays accessible error alert', () => {
     render(<PDFProcessor />)
 
-    const input = screen.getByLabelText(/Arraste arquivos PDF aqui/i)
+    const input = screen.getByLabelText(/Arraste os arquivos PDF para juntar/i)
     const invalidFile = new File(['conteudo'], 'planilha.xlsx', {
       type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
     })
@@ -37,23 +62,48 @@ describe('PDFProcessor', () => {
     expect(alert).toHaveTextContent(/formato não suportado/i)
   })
 
-  it('accepts valid PDF file and allows removing it from the local queue', () => {
+  it('loads two PDFs in merge mode, allows reordering and triggers merge', async () => {
     render(<PDFProcessor />)
 
-    const input = screen.getByLabelText(/Arraste arquivos PDF aqui/i)
-    const validFile = new File(['%PDF-1.4 content'], 'contrato.pdf', {
+    const input = screen.getByLabelText(/Arraste os arquivos PDF para juntar/i)
+    const fileA = new File(['%PDF-1.4 a'], 'parte-1.pdf', {
+      type: 'application/pdf',
+    })
+    const fileB = new File(['%PDF-1.4 b'], 'parte-2.pdf', {
       type: 'application/pdf',
     })
 
-    fireEvent.change(input, { target: { files: [validFile] } })
+    fireEvent.change(input, { target: { files: [fileA, fileB] } })
 
-    expect(screen.getByText('contrato.pdf')).toBeInTheDocument()
-
-    const removeButton = screen.getByRole('button', {
-      name: /Remover contrato\.pdf/i,
+    await waitFor(() => {
+      expect(screen.getByText('parte-1.pdf')).toBeInTheDocument()
+      expect(screen.getByText('parte-2.pdf')).toBeInTheDocument()
     })
-    fireEvent.click(removeButton)
 
-    expect(screen.queryByText('contrato.pdf')).not.toBeInTheDocument()
+    const mergeButton = screen.getByRole('button', {
+      name: /Juntar e baixar PDF/i,
+    })
+    expect(mergeButton).toBeEnabled()
+
+    fireEvent.click(mergeButton)
+
+    await waitFor(() => {
+      expect(screen.getByText(/PDF mesclado pronto/i)).toBeInTheDocument()
+    })
+  })
+
+  it('switches organize modes between merge, split, rotate and remove', () => {
+    render(<PDFProcessor />)
+
+    fireEvent.click(screen.getByRole('button', { name: /Dividir e extrair/i }))
+    expect(
+      screen.getByLabelText(/Páginas ou intervalos para extrair/i),
+    ).toBeInTheDocument()
+
+    fireEvent.click(screen.getByRole('button', { name: /Girar páginas/i }))
+    expect(screen.getByRole('button', { name: '90°' })).toBeInTheDocument()
+
+    fireEvent.click(screen.getByRole('button', { name: /Remover páginas/i }))
+    expect(screen.getByLabelText(/Páginas para remover/i)).toBeInTheDocument()
   })
 })
