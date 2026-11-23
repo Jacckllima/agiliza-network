@@ -1,41 +1,104 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+@import "tailwindcss";
 
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
+@source "..";
+@source "../../../packages/ui";
 
-:root {
-  --color-brand-primary:    #2563EB;
-  --color-brand-secondary:  #3B82F6;
-  --color-brand-accent:     #06B6D4;
-  --color-bg:               #0F172A;
-  --color-surface:          #1E293B;
-  --color-border:           #334155;
-  --color-text-primary:     #F1F5F9;
-  --color-text-secondary:   #94A3B8;
+@theme {
+  --color-brand-primary:     #2563EB;
+  --color-brand-primary-h:   #1D4ED8;
+  --color-brand-secondary:   #3B82F6;
+  --color-brand-accent:      #0EA5E9;
   --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
 }
 
 html {
+  color-scheme: light;
+  scroll-behavior: smooth;
+}
+
+html.dark {
   color-scheme: dark;
 }
 
 body {
-  background-color: var(--color-bg);
-  color: var(--color-text-primary);
+  background-color: #F8FAFC;
+  color: #0F172A;
   font-family: var(--font-sans);
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
+  min-height: 100dvh;
 }
 
+html.dark body {
+  background-color: #0F172A;
+  color: #F8FAFC;
+}
+
+html.light [class~="bg-slate-950"],
+html.light [class~="bg-slate-950/85"],
+html.light [class~="bg-slate-950/70"] {
+  background-color: #F8FAFC !important;
+}
+
+html.light [class~="bg-slate-900"] {
+  background-color: #FFFFFF !important;
+}
+
+html.light [class~="bg-slate-800"] {
+  background-color: #E2E8F0 !important;
+}
+
+html.light [class~="text-white"],
+html.light [class~="text-slate-100"] {
+  color: #0F172A !important;
+}
+
+html.light [class~="text-slate-200"],
+html.light [class~="text-slate-300"] {
+  color: #334155 !important;
+}
+
+html.light [class~="text-slate-400"] {
+  color: #475569 !important;
+}
+
+html.light [class~="bg-blue-600"][class~="text-white"] {
+  color: #FFFFFF !important;
+}
+
+html.light [class~="bg-blue-950"] {
+  background-color: #EFF6FF !important;
+}
+
+html.light [class~="text-blue-300"],
+html.light [class~="text-blue-400"] {
+  color: #1D4ED8 !important;
+}
+
+html.light [class~="border-slate-800"],
+html.light [class~="border-slate-700"] {
+  border-color: #CBD5E1 !important;
+}
+
+html.light [class~="text-emerald-400"] {
+  color: #047857 !important;
+}
 
 :focus-visible {
   outline: 2px solid #3B82F6;
   outline-offset: 2px;
+}
+
+@media print {
+  header,
+  footer {
+    display: none !important;
+  }
+
+  body {
+    background: #FFFFFF !important;
+    color: #0F172A !important;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
