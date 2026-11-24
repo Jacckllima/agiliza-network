@@ -9,13 +9,16 @@ export const metadata: Metadata = {
   metadataBase: new URL(TOOL_URLS.pdf),
   title: 'AgilizaPDF: ferramentas para arquivos PDF no navegador',
   description:
-    'Organize, converta, assine, edite e otimize arquivos PDF diretamente no navegador, sem envio para servidores.',
+    'Junte, divida, converta, assine visualmente, edite, proteja com senha, faça OCR e otimize arquivos PDF diretamente no navegador, sem envio para servidores.',
   keywords: [
     'ferramentas para pdf',
     'juntar pdf',
     'dividir pdf',
     'converter pdf',
     'assinar pdf',
+    'proteger pdf com senha',
+    'ocr pdf',
+    'scanner pdf',
     'comprimir pdf',
     'agiliza pdf',
   ],

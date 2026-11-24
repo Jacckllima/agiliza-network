@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 }
 
 export default function PrivacyPolicyPage() {
-  const lastUpdated = '7 de novembro de 2026'
+  const lastUpdated = '24 de novembro de 2026'
 
   return (
     <Container size="lg" className="py-8 sm:py-12">
@@ -73,9 +73,13 @@ export default function PrivacyPolicyPage() {
                 Agiliza PDF ({getToolHost('pdf')})
               </h3>
               <p className="mt-1 text-sm text-slate-600 dark:text-slate-300">
-                Divisão, mesclagem e inspeção de páginas ocorrem exclusivamente na memória do navegador
-                com a biblioteca <code>pdf-lib</code>. O conteúdo dos arquivos PDF não é enviado para a nuvem
-                nem armazenado pela Rede Agiliza.
+                Todas as operações ativas (juntar, dividir, girar, remover páginas, conversões entre
+                PDF, imagens, texto, HTML, CSV e Markdown, assinatura visual, edição, proteção ou
+                desbloqueio com senha AES-256, scanner por câmera, OCR local via Tesseract
+                WebAssembly e otimização/compressão) ocorrem exclusivamente na memória do navegador
+                do usuário. Os arquivos PDF, imagens capturadas pela câmera (acessada somente com
+                permissão explícita) e senhas digitadas não são enviados para servidores da Rede
+                Agiliza nem armazenados na nuvem.
               </p>
             </article>
 

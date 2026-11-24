@@ -27,7 +27,7 @@ export const TOOLS: ToolMeta[] = [
     id: 'pdf',
     name: 'AgilizaPDF',
     label: 'PDF',
-    description: 'Operações com PDFs indisponíveis nesta versão',
+    description: 'Junta, divide, converte, assina, edita, protege e otimiza PDFs no navegador',
     href: TOOL_URLS.pdf,
     icon: 'file',
   },

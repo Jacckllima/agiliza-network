@@ -2,6 +2,7 @@ import '@testing-library/jest-dom'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { PDFProcessor } from '../../components/PDFProcessor'
 import { extractTextFromPdfBytes } from '../../lib/pdf-to-media'
+import { optimizePdfStructurally } from '../../lib/pdf-optimize'
 
 jest.mock('../../lib/pdf-operations', () => ({
   inspectPdfBytes: jest.fn(async () => ({ pageCount: 3 })),
@@ -163,6 +164,38 @@ jest.mock('../../lib/pdf-ocr', () => ({
     combinedText: '=== Página 1 (OCR) ===\nTexto reconhecido via OCR',
     averageConfidence: 91,
     processedPages: 1,
+  })),
+}))
+
+jest.mock('../../lib/pdf-optimize', () => ({
+  VISUAL_QUALITY_PRESETS: {
+    low: { scale: 1, jpgQuality: 0.45, label: 'Baixa (menor arquivo)' },
+    medium: { scale: 1.5, jpgQuality: 0.65, label: 'Média (equilibrada)' },
+    high: { scale: 2, jpgQuality: 0.82, label: 'Alta (melhor nitidez)' },
+  },
+  optimizePdfStructurally: jest.fn(async () => ({
+    bytes: new Uint8Array([37, 80, 68, 70, 45]),
+    pageCount: 3,
+    mode: 'structural',
+    stats: {
+      originalBytes: 10000,
+      optimizedBytes: 7200,
+      savedBytes: 2800,
+      savedPercent: 28,
+      reduced: true,
+    },
+  })),
+  compressPdfVisually: jest.fn(async () => ({
+    bytes: new Uint8Array([37, 80, 68, 70, 45]),
+    pageCount: 3,
+    mode: 'visual',
+    stats: {
+      originalBytes: 10000,
+      optimizedBytes: 4000,
+      savedBytes: 6000,
+      savedPercent: 60,
+      reduced: true,
+    },
   })),
 }))
 
@@ -531,5 +564,58 @@ describe('PDFProcessor', () => {
         '=== Página 1 (OCR) ===\nTexto reconhecido via OCR',
       )
     })
+  })
+
+  it('optimizes PDF structurally, reports honest no-reduction case and shows visual compression warning', async () => {
+    render(<PDFProcessor />)
+
+    fireEvent.click(screen.getByRole('tab', { name: /Comprimir/i }))
+
+    const input = screen.getByLabelText(/Envie 1 arquivo PDF para otimizar/i)
+    const pdfFile = new File(['%PDF-1.4 opt'], 'apresentacao.pdf', {
+      type: 'application/pdf',
+    })
+    fireEvent.change(input, { target: { files: [pdfFile] } })
+
+    await waitFor(() => {
+      expect(screen.getByText('apresentacao.pdf')).toBeInTheDocument()
+    })
+
+    fireEvent.click(
+      screen.getByRole('button', { name: /Otimizar PDF estruturalmente/i }),
+    )
+    await waitFor(() => {
+      expect(screen.getByText(/Comparativo real de tamanho/i)).toBeInTheDocument()
+      expect(screen.getAllByText(/28,0%/i).length).toBeGreaterThanOrEqual(1)
+    })
+
+    // Caso em que o PDF já está otimizado e não reduz tamanho
+    ;(optimizePdfStructurally as jest.Mock).mockResolvedValueOnce({
+      bytes: new Uint8Array([37, 80, 68, 70, 45]),
+      pageCount: 3,
+      mode: 'structural',
+      stats: {
+        originalBytes: 1000,
+        optimizedBytes: 1050,
+        savedBytes: -50,
+        savedPercent: 0,
+        reduced: false,
+      },
+    })
+
+    fireEvent.click(
+      screen.getByRole('button', { name: /Otimizar PDF estruturalmente/i }),
+    )
+    await waitFor(() => {
+      expect(screen.getByText(/Sem redução de tamanho/i)).toBeInTheDocument()
+    })
+
+    // Aviso transparente na compressão visual
+    fireEvent.click(
+      screen.getByRole('button', { name: /Compressão visual/i }),
+    )
+    expect(screen.getByRole('note')).toHaveTextContent(
+      /O texto deixa de ser selecionável/i,
+    )
   })
 })
