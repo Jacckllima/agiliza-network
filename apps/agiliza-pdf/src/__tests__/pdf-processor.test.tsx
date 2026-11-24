@@ -79,6 +79,48 @@ jest.mock('../../lib/pdf-sign', () => ({
   })),
 }))
 
+jest.mock('../../lib/pdf-edit', () => ({
+  addPageNumbersToPdf: jest.fn(async () => ({
+    bytes: new Uint8Array([37, 80, 68, 70, 45]),
+    pageCount: 3,
+  })),
+  addWatermarkToPdf: jest.fn(async () => ({
+    bytes: new Uint8Array([37, 80, 68, 70, 45]),
+    pageCount: 3,
+  })),
+  cropPdfMargins: jest.fn(async () => ({
+    bytes: new Uint8Array([37, 80, 68, 70, 45]),
+    pageCount: 3,
+  })),
+  flattenPdfForm: jest.fn(async () => ({
+    bytes: new Uint8Array([37, 80, 68, 70, 45]),
+    pageCount: 3,
+    flattenedFields: 2,
+  })),
+  inspectPdfFormFields: jest.fn(async () => ({
+    pageCount: 3,
+    fields: [],
+  })),
+  fillPdfFormFields: jest.fn(async () => ({
+    bytes: new Uint8Array([37, 80, 68, 70, 45]),
+    pageCount: 3,
+  })),
+  applyVisualRedactionToPdf: jest.fn(async () => ({
+    bytes: new Uint8Array([37, 80, 68, 70, 45]),
+    pageCount: 3,
+  })),
+  replacePageWithRasterizedJpeg: jest.fn(async () => ({
+    bytes: new Uint8Array([37, 80, 68, 70, 45]),
+    pageCount: 3,
+  })),
+  compareExtractedPages: jest.fn(() => ({
+    totalCompared: 1,
+    equalCount: 1,
+    modifiedCount: 0,
+    diffs: [{ pageNumber: 1, status: 'equal', textA: 'ok', textB: 'ok' }],
+  })),
+}))
+
 describe('PDFProcessor', () => {
   it('renders accessible tablist and switches between workspaces', () => {
     render(<PDFProcessor />)
@@ -301,5 +343,35 @@ describe('PDFProcessor', () => {
     } finally {
       URL.createObjectURL = originalCreateObjectUrl
     }
+  })
+
+  it('supports advanced edit tools and displays redaction rasterization warning', async () => {
+    render(<PDFProcessor />)
+
+    fireEvent.click(screen.getByRole('tab', { name: /Editar/i }))
+
+    const input = screen.getByLabelText(/Envie 1 arquivo PDF para editar/i)
+    const pdfFile = new File(['%PDF-1.4 edit'], 'manual.pdf', {
+      type: 'application/pdf',
+    })
+    fireEvent.change(input, { target: { files: [pdfFile] } })
+
+    await waitFor(() => {
+      expect(screen.getByText('manual.pdf')).toBeInTheDocument()
+    })
+
+    fireEvent.click(
+      screen.getByRole('button', { name: /Inserir números e baixar PDF/i }),
+    )
+    await waitFor(() => {
+      expect(
+        screen.getByText(/Números de página aplicados em 3 páginas/i),
+      ).toBeInTheDocument()
+    })
+
+    fireEvent.click(screen.getByRole('button', { name: /Ocultar \/ Tarjar/i }))
+    expect(screen.getByRole('note')).toHaveTextContent(
+      /Tarja visual vs\. remoção definitiva/i,
+    )
   })
 })

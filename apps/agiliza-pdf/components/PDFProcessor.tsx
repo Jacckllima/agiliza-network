@@ -7,6 +7,7 @@ import { OrganizePdfPanel } from './OrganizePdfPanel'
 import { ConvertFromPdfPanel } from './ConvertFromPdfPanel'
 import { ConvertToPdfPanel } from './ConvertToPdfPanel'
 import { SignPdfPanel } from './SignPdfPanel'
+import { EditPdfPanel } from './EditPdfPanel'
 import { MAX_MERGE_FILES } from '../lib/file-validation'
 
 export type PdfWorkspaceTab =
@@ -234,6 +235,8 @@ export function PDFProcessor() {
           <ConvertToPdfPanel />
         ) : currentTab.id === 'assinar' ? (
           <SignPdfPanel />
+        ) : currentTab.id === 'editar' ? (
+          <EditPdfPanel />
         ) : (
           <>
             <FileDropzone
