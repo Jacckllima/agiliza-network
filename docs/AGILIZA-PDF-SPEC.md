@@ -11,17 +11,16 @@ Para manter total transparência entre o que já está publicado e o que será e
 
 | Categoria / Funcionalidade | Estado atual no código | Modelo de execução | Issue de entrega |
 |---|---|---|---|
-| Aviso de indisponibilidade (`Operações com PDF indisponíveis`) | Implementado | Client-side | Substituído a partir de #39 |
-| Base UI, correção de Tailwind v4 (`globals.css`), tema claro padrão, acessibilidade, "Como usar", FAQ e `<AdSlot />` | Planejado | Client-side | #39 |
-| **Organizar PDF:** juntar PDFs (com reordenação), dividir/extrair intervalos, girar e remover páginas | Planejado | 100% Client-side | #40 |
-| **Converter de PDF:** PDF para JPG/PNG e extração de texto (`.txt`) | Planejado | 100% Client-side | #41 |
-| **Converter em PDF:** imagens (`JPG`, `PNG`, `WebP`) e texto (`.txt`, `.md`) para PDF | Planejado | 100% Client-side | #42 |
-| **Assinar PDF:** assinatura visual (desenho, texto ou imagem PNG) com posicionamento na página | Planejado | 100% Client-side | #43 |
-| **Edição avançada:** números de página, marca d'água, recortar, achatar, formulários, anotações/texto simples, tarjar/ocultar e comparar PDFs | Planejado | 100% Client-side | #45 |
-| **Segurança, extras, Scanner e OCR:** proteger/desbloquear com senha, HTML/CSV para PDF, PDF para Markdown, scanner por câmera e OCR no navegador | Planejado | 100% Client-side | #46 |
-| **Otimizar/Comprimir PDF**, atualização do portal/políticas e validação completa no CI | Planejado | 100% Client-side | #44 |
-| **Conversões Office, PDF/A e Reparo:** Word, Excel, PowerPoint, ODT, RTF, EPUB, Pages <-> PDF, PDF/A e Reparar PDF | Fora do escopo client-side (Spike) | Backend dedicado (Docker) | #47 |
-| **IA para PDF:** resumir, chat com PDF, traduzir e gerar questões por IA | Fora do escopo client-side (Spike) | Backend + API de LLM | #48 |
+| Base UI, correção de Tailwind v4 (`globals.css`), tema claro padrão, acessibilidade, "Como usar", FAQ e `<AdSlot />` | Implementado | Client-side | #39 |
+| **Organizar PDF:** juntar PDFs (com reordenação), dividir/extrair intervalos, girar e remover páginas | Implementado | 100% Client-side | #40 |
+| **Converter de PDF:** PDF para JPG/PNG e extração de texto (`.txt`) | Implementado | 100% Client-side | #41 |
+| **Converter em PDF:** imagens (`JPG`, `PNG`, `WebP`) e texto (`.txt`, `.md`) para PDF | Implementado | 100% Client-side | #42 |
+| **Assinar PDF:** assinatura visual (desenho, texto ou imagem PNG) com posicionamento na página | Implementado | 100% Client-side | #43 |
+| **Edição avançada:** números de página, marca d'água, recortar, achatar, formulários, anotações/texto simples, tarjar/ocultar e comparar PDFs | Implementado | 100% Client-side | #45 |
+| **Segurança, extras, Scanner e OCR:** proteger/desbloquear com senha, HTML/CSV para PDF, PDF para Markdown, scanner por câmera e OCR no navegador | Implementado | 100% Client-side | #46 |
+| **Otimizar/Comprimir PDF**, atualização do portal/políticas e validação completa no CI | Implementado | 100% Client-side | #44 |
+| **Conversões Office, PDF/A e Reparo:** Word, Excel, PowerPoint, ODT, RTF, EPUB <-> PDF, PDF/A e Reparar PDF | Spike documentado ([AGILIZA-PDF-BACKEND-SPIKE.md](./AGILIZA-PDF-BACKEND-SPIKE.md)) | Backend dedicado (Docker) | #47 |
+| **IA para PDF:** resumir, chat com PDF, traduzir e gerar questões por IA | Spike documentado ([AGILIZA-PDF-AI-SPIKE.md](./AGILIZA-PDF-AI-SPIKE.md)) | Backend + API de LLM | #48 |
 
 *(Nota: o fluxo de "Solicitar assinaturas" com múltiplos signatários e envio por e-mail fica reservado ao app dedicado `apps/agiliza-sign`.)*
 
