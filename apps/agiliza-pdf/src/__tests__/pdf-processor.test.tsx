@@ -121,6 +121,51 @@ jest.mock('../../lib/pdf-edit', () => ({
   })),
 }))
 
+jest.mock('../../lib/pdf-extra-converters', () => ({
+  buildMarkdownFilename: jest.fn((name: string) => `${name}.md`),
+  extractMarkdownFromPdfBytes: jest.fn(async () => ({
+    pageCount: 2,
+    processedPages: 2,
+    truncated: false,
+    markdown: '# Relatório\n\nConteúdo em Markdown',
+    hasSelectableText: true,
+  })),
+  convertHtmlToPdf: jest.fn(async () => ({
+    bytes: new Uint8Array([37, 80, 68, 70, 45]),
+    pageCount: 1,
+  })),
+  convertCsvToPdf: jest.fn(async () => ({
+    bytes: new Uint8Array([37, 80, 68, 70, 45]),
+    pageCount: 2,
+  })),
+}))
+
+jest.mock('../../lib/pdf-security', () => ({
+  inspectPdfSecurity: jest.fn(async () => ({
+    isEncrypted: false,
+    pageCount: 2,
+  })),
+  protectPdfWithPassword: jest.fn(async () => ({
+    bytes: new Uint8Array([37, 80, 68, 70, 45]),
+    pageCount: 2,
+  })),
+  unlockPdfWithPassword: jest.fn(async () => ({
+    bytes: new Uint8Array([37, 80, 68, 70, 45]),
+    pageCount: 2,
+  })),
+}))
+
+jest.mock('../../lib/pdf-ocr', () => ({
+  MAX_OCR_PAGES: 10,
+  buildOcrTextFilename: jest.fn((name: string) => `${name}-ocr.txt`),
+  runOcrOnPdfBytes: jest.fn(async () => ({
+    pages: [{ pageNumber: 1, text: 'Texto reconhecido via OCR', confidence: 91 }],
+    combinedText: '=== Página 1 (OCR) ===\nTexto reconhecido via OCR',
+    averageConfidence: 91,
+    processedPages: 1,
+  })),
+}))
+
 describe('PDFProcessor', () => {
   it('renders accessible tablist and switches between workspaces', () => {
     render(<PDFProcessor />)
@@ -373,5 +418,118 @@ describe('PDFProcessor', () => {
     expect(screen.getByRole('note')).toHaveTextContent(
       /Tarja visual vs\. remoção definitiva/i,
     )
+  })
+
+  it('converts PDF to Markdown and HTML/CSV to PDF', async () => {
+    render(<PDFProcessor />)
+
+    // PDF -> Markdown
+    fireEvent.click(screen.getByRole('tab', { name: /Converter de PDF/i }))
+    const pdfInput = screen.getByLabelText(/Envie 1 arquivo PDF para converter/i)
+    const pdfFile = new File(['%PDF-1.4 md'], 'artigo.pdf', {
+      type: 'application/pdf',
+    })
+    fireEvent.change(pdfInput, { target: { files: [pdfFile] } })
+
+    await waitFor(() => {
+      expect(screen.getByText('artigo.pdf')).toBeInTheDocument()
+    })
+
+    fireEvent.click(
+      screen.getByRole('button', { name: /PDF para Markdown \(\.md\)/i }),
+    )
+    fireEvent.click(
+      screen.getByRole('button', { name: /Converter PDF para Markdown/i }),
+    )
+    await waitFor(() => {
+      expect(screen.getByLabelText(/Markdown gerado/i)).toHaveValue(
+        '# Relatório\n\nConteúdo em Markdown',
+      )
+    })
+
+    // HTML -> PDF e CSV -> PDF
+    fireEvent.click(screen.getByRole('tab', { name: /Converter em PDF/i }))
+
+    fireEvent.click(screen.getByRole('button', { name: /HTML para PDF/i }))
+    fireEvent.change(screen.getByLabelText(/Código HTML/i), {
+      target: { value: '<h1>Teste</h1><p>Conteúdo HTML</p>' },
+    })
+    fireEvent.click(screen.getByRole('button', { name: /Gerar PDF do HTML/i }))
+    await waitFor(() => {
+      expect(screen.getByText(/PDF gerado a partir do HTML/i)).toBeInTheDocument()
+    })
+
+    fireEvent.click(screen.getByRole('button', { name: /CSV para PDF/i }))
+    fireEvent.change(screen.getByLabelText(/Dados CSV/i), {
+      target: { value: 'Item;Valor\nCaderno;25,00' },
+    })
+    fireEvent.click(
+      screen.getByRole('button', { name: /Gerar PDF da tabela CSV/i }),
+    )
+    await waitFor(() => {
+      expect(
+        screen.getByText(/Tabela CSV convertida em PDF/i),
+      ).toBeInTheDocument()
+    })
+  })
+
+  it('supports password protection, camera fallback in scanner and local OCR', async () => {
+    render(<PDFProcessor />)
+
+    fireEvent.click(screen.getByRole('tab', { name: /Segurança e OCR/i }))
+
+    // Proteger com senha
+    const protectInput = screen.getByLabelText(
+      /Envie 1 arquivo PDF para proteger com senha/i,
+    )
+    const pdfFile = new File(['%PDF-1.4 sec'], 'sigiloso.pdf', {
+      type: 'application/pdf',
+    })
+    fireEvent.change(protectInput, { target: { files: [pdfFile] } })
+
+    await waitFor(() => {
+      expect(screen.getByText('sigiloso.pdf')).toBeInTheDocument()
+    })
+
+    fireEvent.change(screen.getByLabelText(/Senha para abrir o PDF/i), {
+      target: { value: 'Senha123' },
+    })
+    fireEvent.change(screen.getByLabelText(/Confirmar senha/i), {
+      target: { value: 'Senha123' },
+    })
+    fireEvent.click(
+      screen.getByRole('button', { name: /Proteger e baixar PDF/i }),
+    )
+
+    await waitFor(() => {
+      expect(
+        screen.getByText(/PDF protegido com criptografia AES-256/i),
+      ).toBeInTheDocument()
+    })
+
+    // Scanner com fallback gracioso quando não há câmera no ambiente
+    fireEvent.click(screen.getByRole('button', { name: /Scanner \(Câmera\)/i }))
+    fireEvent.click(screen.getByRole('button', { name: /Abrir câmera/i }))
+    await waitFor(() => {
+      expect(screen.getByRole('alert')).toHaveTextContent(/não disponibiliza acesso à câmera/i)
+    })
+
+    // OCR local
+    fireEvent.click(screen.getByRole('button', { name: /OCR Local/i }))
+    const ocrInput = screen.getByLabelText(
+      /Envie 1 arquivo PDF escaneado para OCR/i,
+    )
+    fireEvent.change(ocrInput, { target: { files: [pdfFile] } })
+
+    await waitFor(() => {
+      expect(screen.getByText('sigiloso.pdf')).toBeInTheDocument()
+    })
+
+    fireEvent.click(screen.getByRole('button', { name: /Executar OCR local/i }))
+    await waitFor(() => {
+      expect(screen.getByLabelText(/Texto reconhecido por OCR/i)).toHaveValue(
+        '=== Página 1 (OCR) ===\nTexto reconhecido via OCR',
+      )
+    })
   })
 })

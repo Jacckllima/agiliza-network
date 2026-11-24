@@ -15,11 +15,13 @@
   },
   "dependencies": {
     "@agiliza/ui": "*",
+    "@cantoo/pdf-lib": "^2.11.1",
     "next": "16.3.2",
     "pdf-lib": "^1.17.1",
     "pdfjs-dist": "^6.5.438",
     "react": "19.2.8",
-    "react-dom": "19.2.8"
+    "react-dom": "19.2.8",
+    "tesseract.js": "^7.0.0"
   },
   "devDependencies": {
     "@agiliza/eslint-config": "*",
