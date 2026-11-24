@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 }
 
 export default function TermsOfUsePage() {
-  const lastUpdated = '23 de novembro de 2026'
+  const lastUpdated = '24 de novembro de 2026'
 
   return (
     <Container size="lg" className="py-8 sm:py-12">
@@ -62,10 +62,9 @@ export default function TermsOfUsePage() {
             </p>
             <p>
               Nesta versão, nem todas as ferramentas listadas no portal possuem processamento ativo:
-              Agiliza PDF ({getToolHost('pdf')}), Agiliza Assinador ({getToolHost('sign')}) e
-              Agiliza Mídia ({getToolHost('media')}) exibem aviso de indisponibilidade, e Agiliza Bio
-              ({getToolHost('bio')}) opera apenas como prévia local sem publicação de link
-              compartilhável.
+              Agiliza Assinador ({getToolHost('sign')}) e Agiliza Mídia ({getToolHost('media')})
+              exibem aviso de indisponibilidade, e Agiliza Bio ({getToolHost('bio')}) opera apenas
+              como prévia local sem publicação de link compartilhável.
             </p>
           </div>
         </Card>
@@ -90,6 +89,15 @@ export default function TermsOfUsePage() {
               substitui o arquivo XML fiscal oficial nem realiza emissão ou transmissão perante a SEFAZ.
               A veracidade das informações, a adequação fiscal e a validade legal dos documentos são de
               responsabilidade exclusiva de quem os emite.
+            </p>
+            <p>
+              <strong>Agiliza PDF ({getToolHost('pdf')}):</strong> Todas as operações executam
+              localmente no navegador. A assinatura visual aplica uma representação gráfica sobre o
+              documento e não substitui assinatura digital com certificado ICP-Brasil nem garante
+              validade jurídica específica. Na compressão visual, as páginas são convertidas em
+              imagens JPEG (perdendo a seleção de texto), e o desbloqueio exige a senha legítima
+              informada pelo usuário. Você é responsável pela titularidade, confidencialidade e
+              conferência final dos arquivos processados.
             </p>
             <p>
               <strong>Agiliza Dev ({getToolHost('dev')}):</strong> Geradores de CPF e CNPJ destinam-se
