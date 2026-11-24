@@ -8,6 +8,7 @@ import { ConvertFromPdfPanel } from './ConvertFromPdfPanel'
 import { ConvertToPdfPanel } from './ConvertToPdfPanel'
 import { SignPdfPanel } from './SignPdfPanel'
 import { EditPdfPanel } from './EditPdfPanel'
+import { SecurityOcrPanel } from './SecurityOcrPanel'
 import { MAX_MERGE_FILES } from '../lib/file-validation'
 
 export type PdfWorkspaceTab =
@@ -55,9 +56,9 @@ const WORKSPACE_TABS = [
     id: 'de-pdf',
     label: 'Converter de PDF',
     icon: 'image',
-    title: 'Converter de PDF (JPG, PNG e extração de texto)',
+    title: 'Converter de PDF (JPG, PNG, texto e Markdown)',
     description:
-      'Exporte páginas de um PDF como imagem ou extraia a camada de texto diretamente no navegador.',
+      'Exporte páginas de um PDF como imagem, extraia texto puro ou converta para Markdown diretamente no navegador.',
     dropzoneLabel: 'Envie 1 arquivo PDF para conversão',
     dropzoneHelper: 'Formato .pdf, 1 arquivo por vez, limite seguro de 25 MB.',
     allowedExtensions: ['.pdf'],
@@ -71,13 +72,13 @@ const WORKSPACE_TABS = [
     id: 'para-pdf',
     label: 'Converter em PDF',
     icon: 'file',
-    title: 'Converter em PDF (imagens JPG/PNG/WebP e texto)',
+    title: 'Converter em PDF (imagens, texto, HTML e CSV)',
     description:
-      'Monte um arquivo PDF a partir de imagens ou documentos de texto sem enviar seus arquivos para servidores.',
+      'Monte um arquivo PDF A4 a partir de imagens, texto, código HTML ou planilhas CSV sem enviar arquivos para servidores.',
     dropzoneLabel: 'Selecione imagens ou arquivos de texto',
-    dropzoneHelper: 'Formatos .jpg, .jpeg, .png, .webp, .txt ou .md, até 25 MB por arquivo.',
-    allowedExtensions: ['.jpg', '.jpeg', '.png', '.webp', '.txt', '.md'],
-    accept: '.jpg,.jpeg,.png,.webp,.txt,.md,image/jpeg,image/png,image/webp,text/plain',
+    dropzoneHelper: 'Formatos .jpg, .jpeg, .png, .webp, .txt, .md, .html ou .csv, até 25 MB por arquivo.',
+    allowedExtensions: ['.jpg', '.jpeg', '.png', '.webp', '.txt', '.md', '.html', '.csv'],
+    accept: '.jpg,.jpeg,.png,.webp,.txt,.md,.html,.csv,image/jpeg,image/png,image/webp,text/plain,text/html,text/csv',
     multiple: true,
     maxFiles: 20,
     roadmapNote:
@@ -237,6 +238,8 @@ export function PDFProcessor() {
           <SignPdfPanel />
         ) : currentTab.id === 'editar' ? (
           <EditPdfPanel />
+        ) : currentTab.id === 'seguranca' ? (
+          <SecurityOcrPanel />
         ) : (
           <>
             <FileDropzone

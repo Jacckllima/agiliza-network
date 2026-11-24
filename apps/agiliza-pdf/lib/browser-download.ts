@@ -14,8 +14,12 @@ export function downloadDataUrlAsFile(dataUrl: string, filename: string): void {
   triggerLinkDownload(dataUrl, filename, false)
 }
 
-export function downloadTextAsFile(text: string, filename: string): void {
-  const blob = new Blob([text], { type: 'text/plain;charset=utf-8' })
+export function downloadTextAsFile(
+  text: string,
+  filename: string,
+  mimeType = 'text/plain;charset=utf-8',
+): void {
+  const blob = new Blob([text], { type: mimeType })
   const url = URL.createObjectURL(blob)
   triggerLinkDownload(url, filename, true)
 }

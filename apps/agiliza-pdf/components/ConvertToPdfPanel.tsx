@@ -12,8 +12,13 @@ import {
   type PageOrientation,
 } from '../lib/convert-to-pdf'
 import { downloadBytesAsFile } from '../lib/browser-download'
+import {
+  convertCsvToPdf,
+  convertHtmlToPdf,
+  type CsvDelimiterOption,
+} from '../lib/pdf-extra-converters'
 
-type ConvertToMode = 'images' | 'text'
+type ConvertToMode = 'images' | 'text' | 'html' | 'csv'
 
 const MAX_IMAGES = 20
 const MAX_IMAGES_TOTAL_BYTES = 30 * 1024 * 1024 // 30 MB
@@ -21,19 +26,43 @@ const MAX_IMAGES_TOTAL_BYTES = 30 * 1024 * 1024 // 30 MB
 const MODE_OPTIONS = [
   {
     id: 'images' as const,
-    label: 'Imagens para PDF (JPG/PNG/WebP)',
+    label: 'Imagens para PDF',
     icon: 'image' as IconName,
     description:
       'Monte 1 PDF A4 a partir de imagens JPG, PNG ou WebP, escolhendo ordem, orientação e margens.',
   },
   {
     id: 'text' as const,
-    label: 'Texto para PDF (.txt / .md)',
+    label: 'Texto para PDF',
     icon: 'type' as IconName,
     description:
       'Digite, cole ou importe um arquivo .txt ou .md para gerar um PDF A4 com paginação automática.',
   },
+  {
+    id: 'html' as const,
+    label: 'HTML para PDF',
+    icon: 'code' as IconName,
+    description:
+      'Cole código HTML ou importe um arquivo .html simples para gerar um PDF A4 estruturado com títulos, listas e blocos de código.',
+  },
+  {
+    id: 'csv' as const,
+    label: 'CSV para PDF',
+    icon: 'file' as IconName,
+    description:
+      'Transforme dados tabulares CSV (separados por ponto e vírgula, vírgula ou tab) em uma tabela paginada em A4.',
+  },
 ] as const
+
+const CSV_DELIMITER_OPTIONS: readonly {
+  value: CsvDelimiterOption
+  label: string
+}[] = [
+  { value: 'auto', label: 'Automático' },
+  { value: ';', label: 'Ponto e vírgula (;)' },
+  { value: ',', label: 'Vírgula (,)' },
+  { value: '\t', label: 'Tabulação (Tab)' },
+]
 
 const ORIENTATION_OPTIONS: readonly { value: PageOrientation; label: string }[] = [
   { value: 'auto', label: 'Automática' },
@@ -123,6 +152,20 @@ export function ConvertToPdfPanel() {
   const [textBody, setTextBody] = useState('')
   const [fontSize, setFontSize] = useState<number>(11)
   const [textMargin, setTextMargin] = useState<PageMarginPreset>('standard')
+
+  // Estado HTML -> PDF
+  const [htmlTitle, setHtmlTitle] = useState('')
+  const [htmlBody, setHtmlBody] = useState('')
+  const [htmlFontSize, setHtmlFontSize] = useState<number>(11)
+
+  // Estado CSV -> PDF
+  const [csvTitle, setCsvTitle] = useState('')
+  const [csvBody, setCsvBody] = useState('')
+  const [csvDelimiter, setCsvDelimiter] = useState<CsvDelimiterOption>('auto')
+  const [csvOrientation, setCsvOrientation] = useState<'portrait' | 'landscape'>(
+    'portrait',
+  )
+  const [csvHasHeader, setCsvHasHeader] = useState(true)
 
   const [isBusy, setIsBusy] = useState(false)
   const [errorMessage, setErrorMessage] = useState('')
@@ -250,6 +293,124 @@ export function ConvertToPdfPanel() {
     }
   }
 
+  const handleImportHtmlFile = async (event: ChangeEvent<HTMLInputElement>) => {
+    clearFeedback()
+    const file = event.target.files?.[0]
+    event.target.value = ''
+    if (!file) return
+
+    const ext = getFileExtension(file.name)
+    if (ext !== '.html' && ext !== '.htm') {
+      setErrorMessage('Formato não suportado. Envie um arquivo .html ou .htm.')
+      return
+    }
+
+    if (file.size > 5 * 1024 * 1024) {
+      setErrorMessage('O arquivo HTML excede o limite seguro de 5 MB.')
+      return
+    }
+
+    try {
+      const content =
+        typeof file.text === 'function'
+          ? await file.text()
+          : new TextDecoder('utf-8').decode(await readFileBytes(file))
+      setHtmlBody(content)
+      if (!htmlTitle.trim()) {
+        setHtmlTitle(file.name.replace(/\.html?$/i, ''))
+      }
+      setStatusMessage(`Arquivo "${file.name}" carregado no editor HTML local.`)
+    } catch {
+      setErrorMessage('Não foi possível ler o arquivo HTML selecionado.')
+    }
+  }
+
+  const handleGenerateHtmlPdf = async () => {
+    clearFeedback()
+    if (!htmlBody.trim()) {
+      setErrorMessage('Cole ou importe código HTML antes de gerar o PDF.')
+      return
+    }
+
+    setIsBusy(true)
+    try {
+      const result = await convertHtmlToPdf(htmlBody, {
+        title: htmlTitle,
+        fontSize: htmlFontSize,
+      })
+      downloadBytesAsFile(result.bytes, 'agiliza-html.pdf')
+      setStatusMessage(
+        `PDF gerado a partir do HTML (${result.pageCount} ${result.pageCount === 1 ? 'página' : 'páginas'}, ${formatFileSize(result.bytes.byteLength)}). Download iniciado.`,
+      )
+    } catch (err) {
+      setErrorMessage(
+        err instanceof Error ? err.message : 'Erro ao converter HTML em PDF.',
+      )
+    } finally {
+      setIsBusy(false)
+    }
+  }
+
+  const handleImportCsvFile = async (event: ChangeEvent<HTMLInputElement>) => {
+    clearFeedback()
+    const file = event.target.files?.[0]
+    event.target.value = ''
+    if (!file) return
+
+    const ext = getFileExtension(file.name)
+    if (ext !== '.csv') {
+      setErrorMessage('Formato não suportado. Envie um arquivo .csv.')
+      return
+    }
+
+    if (file.size > 5 * 1024 * 1024) {
+      setErrorMessage('O arquivo CSV excede o limite seguro de 5 MB.')
+      return
+    }
+
+    try {
+      const content =
+        typeof file.text === 'function'
+          ? await file.text()
+          : new TextDecoder('utf-8').decode(await readFileBytes(file))
+      setCsvBody(content)
+      if (!csvTitle.trim()) {
+        setCsvTitle(file.name.replace(/\.csv$/i, ''))
+      }
+      setStatusMessage(`Arquivo "${file.name}" carregado no editor CSV local.`)
+    } catch {
+      setErrorMessage('Não foi possível ler o arquivo CSV selecionado.')
+    }
+  }
+
+  const handleGenerateCsvPdf = async () => {
+    clearFeedback()
+    if (!csvBody.trim()) {
+      setErrorMessage('Cole ou importe dados CSV antes de gerar o PDF.')
+      return
+    }
+
+    setIsBusy(true)
+    try {
+      const result = await convertCsvToPdf(csvBody, {
+        title: csvTitle,
+        delimiter: csvDelimiter,
+        orientation: csvOrientation,
+        hasHeaderRow: csvHasHeader,
+      })
+      downloadBytesAsFile(result.bytes, 'agiliza-tabela-csv.pdf')
+      setStatusMessage(
+        `Tabela CSV convertida em PDF (${result.pageCount} ${result.pageCount === 1 ? 'página' : 'páginas'}, ${formatFileSize(result.bytes.byteLength)}). Download iniciado.`,
+      )
+    } catch (err) {
+      setErrorMessage(
+        err instanceof Error ? err.message : 'Erro ao converter CSV em PDF.',
+      )
+    } finally {
+      setIsBusy(false)
+    }
+  }
+
   const currentModeInfo =
     MODE_OPTIONS.find((item) => item.id === mode) ?? MODE_OPTIONS[0]
 
@@ -259,7 +420,7 @@ export function ConvertToPdfPanel() {
       <div
         role="group"
         aria-label="Escolha o tipo de entrada para gerar PDF"
-        className="grid grid-cols-1 gap-2 sm:grid-cols-2"
+        className="grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-4"
       >
         {MODE_OPTIONS.map((option) => {
           const active = option.id === mode
@@ -538,6 +699,242 @@ export function ConvertToPdfPanel() {
               <Icon name="download" className="h-4 w-4" />
               <span>
                 {isBusy ? 'Gerando PDF...' : 'Gerar PDF do texto'}
+              </span>
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Modo HTML -> PDF */}
+      {mode === 'html' && (
+        <div className="space-y-4">
+          <div className="flex flex-wrap items-center justify-between gap-3 rounded-lg border border-slate-800 bg-slate-900 px-4 py-3">
+            <p className="text-xs text-slate-400">
+              Cole código HTML simples abaixo ou importe 1 arquivo .html. Tags de script e estilo são ignoradas com segurança.
+            </p>
+            <label
+              htmlFor="import-html-file"
+              className="inline-flex cursor-pointer items-center gap-1.5 rounded-md border border-slate-700 px-3 py-1.5 text-xs font-semibold text-slate-200 hover:border-blue-500"
+            >
+              <Icon name="folder" className="h-3.5 w-3.5" />
+              <span>Importar .html</span>
+              <input
+                id="import-html-file"
+                type="file"
+                accept=".html,.htm,text/html"
+                onChange={handleImportHtmlFile}
+                className="sr-only"
+              />
+            </label>
+          </div>
+
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+            <div className="sm:col-span-2">
+              <label
+                htmlFor="html-to-pdf-title"
+                className="block text-xs font-semibold text-white"
+              >
+                Título do documento (opcional)
+              </label>
+              <input
+                id="html-to-pdf-title"
+                type="text"
+                value={htmlTitle}
+                onChange={(event) => setHtmlTitle(event.target.value)}
+                placeholder="Ex.: Proposta comercial"
+                className="mt-1.5 w-full rounded-lg border border-slate-700 bg-slate-950 px-3.5 py-2 text-sm text-white placeholder:text-slate-500 focus:border-blue-500"
+              />
+            </div>
+
+            <div>
+              <label
+                htmlFor="html-to-pdf-font-size"
+                className="block text-xs font-semibold text-white"
+              >
+                Tamanho base da fonte
+              </label>
+              <select
+                id="html-to-pdf-font-size"
+                value={htmlFontSize}
+                onChange={(event) => setHtmlFontSize(Number(event.target.value))}
+                className="mt-1.5 w-full rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 text-sm text-white focus:border-blue-500"
+              >
+                {FONT_SIZE_OPTIONS.map((size) => (
+                  <option key={size} value={size}>
+                    {size} pt
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
+
+          <div>
+            <label
+              htmlFor="html-to-pdf-body"
+              className="block text-xs font-semibold text-white"
+            >
+              Código HTML
+            </label>
+            <textarea
+              id="html-to-pdf-body"
+              rows={9}
+              value={htmlBody}
+              onChange={(event) => setHtmlBody(event.target.value)}
+              placeholder="<h1>Título</h1><p>Conteúdo do documento...</p><ul><li>Item 1</li></ul>"
+              className="mt-1.5 w-full rounded-lg border border-slate-700 bg-slate-950 p-3.5 text-xs font-mono text-white placeholder:text-slate-500 leading-relaxed focus:border-blue-500"
+            />
+          </div>
+
+          <div className="flex justify-end">
+            <button
+              type="button"
+              onClick={handleGenerateHtmlPdf}
+              disabled={isBusy || !htmlBody.trim()}
+              className="inline-flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-50"
+            >
+              <Icon name="download" className="h-4 w-4" />
+              <span>
+                {isBusy ? 'Gerando PDF...' : 'Gerar PDF do HTML'}
+              </span>
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Modo CSV -> PDF */}
+      {mode === 'csv' && (
+        <div className="space-y-4">
+          <div className="flex flex-wrap items-center justify-between gap-3 rounded-lg border border-slate-800 bg-slate-900 px-4 py-3">
+            <p className="text-xs text-slate-400">
+              Cole dados CSV abaixo ou importe 1 arquivo .csv para gerar uma tabela A4 paginada.
+            </p>
+            <label
+              htmlFor="import-csv-file"
+              className="inline-flex cursor-pointer items-center gap-1.5 rounded-md border border-slate-700 px-3 py-1.5 text-xs font-semibold text-slate-200 hover:border-blue-500"
+            >
+              <Icon name="folder" className="h-3.5 w-3.5" />
+              <span>Importar .csv</span>
+              <input
+                id="import-csv-file"
+                type="file"
+                accept=".csv,text/csv"
+                onChange={handleImportCsvFile}
+                className="sr-only"
+              />
+            </label>
+          </div>
+
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+            <div>
+              <label
+                htmlFor="csv-to-pdf-title"
+                className="block text-xs font-semibold text-white"
+              >
+                Título da tabela (opcional)
+              </label>
+              <input
+                id="csv-to-pdf-title"
+                type="text"
+                value={csvTitle}
+                onChange={(event) => setCsvTitle(event.target.value)}
+                placeholder="Ex.: Relatório de vendas"
+                className="mt-1.5 w-full rounded-lg border border-slate-700 bg-slate-950 px-3.5 py-2 text-sm text-white placeholder:text-slate-500 focus:border-blue-500"
+              />
+            </div>
+
+            <div>
+              <label
+                htmlFor="csv-to-pdf-delimiter"
+                className="block text-xs font-semibold text-white"
+              >
+                Separador de colunas
+              </label>
+              <select
+                id="csv-to-pdf-delimiter"
+                value={csvDelimiter}
+                onChange={(event) =>
+                  setCsvDelimiter(event.target.value as CsvDelimiterOption)
+                }
+                className="mt-1.5 w-full rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 text-sm text-white focus:border-blue-500"
+              >
+                {CSV_DELIMITER_OPTIONS.map((opt) => (
+                  <option key={opt.value} value={opt.value}>
+                    {opt.label}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div>
+              <span className="block text-xs font-semibold text-white">
+                Orientação A4
+              </span>
+              <div className="mt-1.5 flex gap-2">
+                {(
+                  [
+                    { value: 'portrait', label: 'Retrato' },
+                    { value: 'landscape', label: 'Paisagem' },
+                  ] as const
+                ).map((opt) => (
+                  <button
+                    key={opt.value}
+                    type="button"
+                    aria-pressed={csvOrientation === opt.value}
+                    onClick={() => setCsvOrientation(opt.value)}
+                    className={`flex-1 rounded-lg border px-3 py-2 text-xs font-semibold transition-colors ${
+                      csvOrientation === opt.value
+                        ? 'border-blue-600 bg-blue-600 text-white'
+                        : 'border-slate-700 bg-slate-900 text-slate-300 hover:border-blue-500/60'
+                    }`}
+                  >
+                    {opt.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          <label
+            htmlFor="csv-has-header"
+            className="flex items-center gap-2 text-xs text-slate-300"
+          >
+            <input
+              id="csv-has-header"
+              type="checkbox"
+              checked={csvHasHeader}
+              onChange={(event) => setCsvHasHeader(event.target.checked)}
+              className="h-4 w-4 rounded border-slate-600 accent-blue-600"
+            />
+            <span>Primeira linha é cabeçalho (repetir automaticamente em cada página)</span>
+          </label>
+
+          <div>
+            <label
+              htmlFor="csv-to-pdf-body"
+              className="block text-xs font-semibold text-white"
+            >
+              Dados CSV
+            </label>
+            <textarea
+              id="csv-to-pdf-body"
+              rows={9}
+              value={csvBody}
+              onChange={(event) => setCsvBody(event.target.value)}
+              placeholder={'Produto;Quantidade;Valor\nNotebook;2;4500,00\nMouse;5;120,00'}
+              className="mt-1.5 w-full rounded-lg border border-slate-700 bg-slate-950 p-3.5 text-xs font-mono text-white placeholder:text-slate-500 leading-relaxed focus:border-blue-500"
+            />
+          </div>
+
+          <div className="flex justify-end">
+            <button
+              type="button"
+              onClick={handleGenerateCsvPdf}
+              disabled={isBusy || !csvBody.trim()}
+              className="inline-flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-50"
+            >
+              <Icon name="download" className="h-4 w-4" />
+              <span>
+                {isBusy ? 'Gerando PDF...' : 'Gerar PDF da tabela CSV'}
               </span>
             </button>
           </div>

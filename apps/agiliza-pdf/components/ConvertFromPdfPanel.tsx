@@ -21,8 +21,12 @@ import {
   downloadDataUrlAsFile,
   downloadTextAsFile,
 } from '../lib/browser-download'
+import {
+  buildMarkdownFilename,
+  extractMarkdownFromPdfBytes,
+} from '../lib/pdf-extra-converters'
 
-type ConvertFromMode = 'images' | 'text'
+type ConvertFromMode = 'images' | 'text' | 'markdown'
 
 interface LoadedSourcePdf {
   file: File
@@ -44,6 +48,13 @@ const MODE_OPTIONS = [
     icon: 'type' as IconName,
     description:
       'Extraia a camada de texto selecionável página por página para copiar ou baixar como arquivo .txt.',
+  },
+  {
+    id: 'markdown' as const,
+    label: 'PDF para Markdown (.md)',
+    icon: 'code' as IconName,
+    description:
+      'Exporte o texto do PDF estruturado em Markdown com títulos, listas e separadores de página.',
   },
 ] as const
 
@@ -92,6 +103,12 @@ export function ConvertFromPdfPanel() {
   const [noSelectableText, setNoSelectableText] = useState(false)
   const [textTruncated, setTextTruncated] = useState(false)
 
+  const [markdownOutput, setMarkdownOutput] = useState('')
+  const [hasExtractedMarkdown, setHasExtractedMarkdown] = useState(false)
+  const [markdownNoText, setMarkdownNoText] = useState(false)
+  const [markdownTruncated, setMarkdownTruncated] = useState(false)
+  const [includePageHeaders, setIncludePageHeaders] = useState(true)
+
   const [isBusy, setIsBusy] = useState(false)
   const [errorMessage, setErrorMessage] = useState('')
   const [statusMessage, setStatusMessage] = useState('')
@@ -134,6 +151,10 @@ export function ConvertFromPdfPanel() {
     setHasExtracted(false)
     setNoSelectableText(false)
     setTextTruncated(false)
+    setMarkdownOutput('')
+    setHasExtractedMarkdown(false)
+    setMarkdownNoText(false)
+    setMarkdownTruncated(false)
     setBatchIndex(0)
 
     const file = nextFiles[0]
@@ -248,6 +269,57 @@ export function ConvertFromPdfPanel() {
     setStatusMessage(`Arquivo ${filename} gerado localmente. Download iniciado.`)
   }
 
+  const handleExtractMarkdown = async () => {
+    if (!sourcePdf) {
+      setErrorMessage('Envie 1 arquivo PDF antes de converter para Markdown.')
+      return
+    }
+    clearFeedback()
+    setIsBusy(true)
+    try {
+      const result = await extractMarkdownFromPdfBytes(sourcePdf.bytes, {
+        includePageHeaders,
+      })
+      setHasExtractedMarkdown(true)
+      setMarkdownTruncated(result.truncated)
+      setMarkdownNoText(!result.hasSelectableText)
+      setMarkdownOutput(result.markdown)
+
+      if (result.hasSelectableText) {
+        setStatusMessage(
+          `Markdown estruturado gerado de ${result.processedPages} ${result.processedPages === 1 ? 'página' : 'páginas'} localmente.`,
+        )
+      }
+    } catch (err) {
+      setErrorMessage(
+        err instanceof Error
+          ? err.message
+          : 'Erro ao converter o PDF para Markdown.',
+      )
+    } finally {
+      setIsBusy(false)
+    }
+  }
+
+  const handleCopyMarkdown = async () => {
+    if (!markdownOutput) return
+    try {
+      await navigator.clipboard.writeText(markdownOutput)
+      setStatusMessage('Markdown copiado para a área de transferência.')
+    } catch {
+      setErrorMessage(
+        'Não foi possível copiar automaticamente. Selecione o Markdown no campo e copie manualmente.',
+      )
+    }
+  }
+
+  const handleDownloadMarkdown = () => {
+    if (!sourcePdf || !markdownOutput) return
+    const filename = buildMarkdownFilename(sourcePdf.file.name)
+    downloadTextAsFile(markdownOutput, filename, 'text/markdown;charset=utf-8')
+    setStatusMessage(`Arquivo ${filename} gerado localmente. Download iniciado.`)
+  }
+
   const currentModeInfo =
     MODE_OPTIONS.find((item) => item.id === mode) ?? MODE_OPTIONS[0]
   const pageWindow = sourcePdf
@@ -260,7 +332,7 @@ export function ConvertFromPdfPanel() {
       <div
         role="group"
         aria-label="Escolha o formato de saída do PDF"
-        className="grid grid-cols-1 gap-2 sm:grid-cols-2"
+        className="grid grid-cols-1 gap-2 sm:grid-cols-3"
       >
         {MODE_OPTIONS.map((option) => {
           const active = option.id === mode
@@ -497,7 +569,7 @@ export function ConvertFromPdfPanel() {
             >
               <Icon name="warning" className="mt-0.5 h-4 w-4 shrink-0 text-amber-500" />
               <p className="leading-relaxed">
-                Nenhum texto selecionável foi encontrado neste PDF. O arquivo parece ser composto apenas por imagens escaneadas. Esta aba extrai apenas camadas de texto nativas (não realiza OCR).
+                Nenhum texto selecionável foi encontrado neste PDF. O arquivo parece ser composto apenas por imagens escaneadas. Use a aba Segurança e OCR para reconhecer texto de páginas escaneadas.
               </p>
             </div>
           )}
@@ -542,6 +614,96 @@ export function ConvertFromPdfPanel() {
                 >
                   <Icon name="download" className="h-4 w-4" />
                   <span>Baixar .txt</span>
+                </button>
+              </div>
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* Modo PDF -> Markdown */}
+      {mode === 'markdown' && (
+        <div className="space-y-4">
+          <div className="flex flex-wrap items-center justify-between gap-3 rounded-lg border border-slate-800 bg-slate-900 px-4 py-3">
+            <label
+              htmlFor="markdown-include-page-headers"
+              className="flex items-center gap-2 text-xs text-slate-300"
+            >
+              <input
+                id="markdown-include-page-headers"
+                type="checkbox"
+                checked={includePageHeaders}
+                onChange={(event) => setIncludePageHeaders(event.target.checked)}
+                className="h-4 w-4 rounded border-slate-600 accent-blue-600"
+              />
+              <span>Incluir marcadores de página nos comentários Markdown</span>
+            </label>
+
+            <button
+              type="button"
+              onClick={handleExtractMarkdown}
+              disabled={isBusy || !sourcePdf}
+              className="inline-flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-50"
+            >
+              <Icon name="code" className="h-4 w-4" />
+              <span>
+                {isBusy ? 'Convertendo para Markdown...' : 'Converter PDF para Markdown'}
+              </span>
+            </button>
+          </div>
+
+          {hasExtractedMarkdown && markdownNoText && (
+            <div
+              role="status"
+              className="flex items-start gap-2.5 rounded-lg border border-amber-500/40 bg-amber-500/10 px-4 py-3 text-xs text-amber-800 dark:text-amber-200"
+            >
+              <Icon name="warning" className="mt-0.5 h-4 w-4 shrink-0 text-amber-500" />
+              <p className="leading-relaxed">
+                Nenhum texto selecionável foi encontrado neste PDF. Se o arquivo for um documento escaneado, utilize a aba Segurança e OCR.
+              </p>
+            </div>
+          )}
+
+          {hasExtractedMarkdown && !markdownNoText && (
+            <div className="space-y-3">
+              {markdownTruncated && (
+                <p className="text-xs text-amber-600 dark:text-amber-300">
+                  Aviso: a conversão foi limitada às primeiras {MAX_RENDER_PAGES} páginas para manter o navegador responsivo.
+                </p>
+              )}
+
+              <div>
+                <label
+                  htmlFor="extracted-pdf-markdown"
+                  className="block text-xs font-semibold text-white"
+                >
+                  Markdown gerado (editável antes de copiar ou baixar)
+                </label>
+                <textarea
+                  id="extracted-pdf-markdown"
+                  rows={10}
+                  value={markdownOutput}
+                  onChange={(event) => setMarkdownOutput(event.target.value)}
+                  className="mt-1.5 w-full rounded-lg border border-slate-700 bg-slate-950 p-3.5 text-xs font-mono text-white leading-relaxed focus:border-blue-500"
+                />
+              </div>
+
+              <div className="flex flex-wrap justify-end gap-2">
+                <button
+                  type="button"
+                  onClick={handleCopyMarkdown}
+                  className="inline-flex items-center gap-1.5 rounded-lg border border-slate-700 bg-slate-900 px-3.5 py-2 text-xs font-semibold text-slate-200 hover:border-blue-500"
+                >
+                  <Icon name="copy" className="h-4 w-4" />
+                  <span>Copiar Markdown</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={handleDownloadMarkdown}
+                  className="inline-flex items-center gap-1.5 rounded-lg bg-blue-600 px-4 py-2 text-xs font-semibold text-white hover:bg-blue-700"
+                >
+                  <Icon name="download" className="h-4 w-4" />
+                  <span>Baixar .md</span>
                 </button>
               </div>
             </div>
