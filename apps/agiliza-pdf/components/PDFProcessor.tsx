@@ -6,6 +6,7 @@ import { FileDropzone } from './FileDropzone'
 import { OrganizePdfPanel } from './OrganizePdfPanel'
 import { ConvertFromPdfPanel } from './ConvertFromPdfPanel'
 import { ConvertToPdfPanel } from './ConvertToPdfPanel'
+import { SignPdfPanel } from './SignPdfPanel'
 import { MAX_MERGE_FILES } from '../lib/file-validation'
 
 export type PdfWorkspaceTab =
@@ -231,6 +232,8 @@ export function PDFProcessor() {
           <ConvertFromPdfPanel />
         ) : currentTab.id === 'para-pdf' ? (
           <ConvertToPdfPanel />
+        ) : currentTab.id === 'assinar' ? (
+          <SignPdfPanel />
         ) : (
           <>
             <FileDropzone
